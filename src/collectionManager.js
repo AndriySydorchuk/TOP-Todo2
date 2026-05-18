@@ -11,7 +11,7 @@ const collectionManager = (() => {
         const formattedIndex = parseInt(todoIndex, 10) - 1;
         const removed = todoCollection.splice(formattedIndex, 1);
 
-        return removed.length > 1;
+        return removed.length > 0;
     }
 
     function getAllTodos() {

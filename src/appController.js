@@ -6,6 +6,7 @@ const AppController = (() => {
         return prompt(
             `Menu:
     'new' - create a new todo.
+    'delete' - delete a todo.
     'list' - list all todos.
     'exit' - exit the application.
             
@@ -22,11 +23,16 @@ What would you like to do?`);
 
                 const todo = createTodo(title, description, dueDate, priority);
                 collectionManager.addTodo(todo);
+
+                //check if really creating
                 console.log("New Todo Created:", todo);
                 break;
             case "list":
                 const list = collectionManager.getAllTodos();
                 console.log("Todo List:", list);
+                break;
+            case "delete":
+                handleDeleteAction();
                 break;
             case "exit":
                 console.log("Exiting the application. Goodbye!");
@@ -35,6 +41,24 @@ What would you like to do?`);
                 console.log("Invalid action. Please choose 'new', 'list', or 'exit'.");
         }
     }
+
+    function handleDeleteAction() {
+        const todoIndex = prompt(
+            `Todo List:
+${collectionManager.getAllTodos().map((todo, index) => {
+                return `${index + 1}. ${todo.title}`
+            }).join("\n")}                    
+Enter the id of the todo you want to delete:`
+        )
+
+        const isDeleted = collectionManager.deleteTodo(todoIndex);
+
+        if (isDeleted)
+            console.log("Todo was successfully deleted");
+        else
+            console.log("Todo deletion failed.");
+    }
+
 
     return { getUserAction, handleUserAction }
 })();

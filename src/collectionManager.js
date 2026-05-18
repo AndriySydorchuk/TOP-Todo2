@@ -3,7 +3,6 @@ const collectionManager = (() => {
 
     function addTodo(todo) {
         todoCollection.push(todo);
-        //return boolean
     }
 
     function deleteTodo(todoIndex) {

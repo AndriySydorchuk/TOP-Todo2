@@ -3,7 +3,13 @@ import { collectionManager } from './collectionManager';
 
 const AppController = (() => {
     const getUserAction = () => {
-        return prompt("Menu: \nType 'new' to create a new todo. \n\nWhat would you like to do?");
+        return prompt(
+            `Menu:
+    'new' - create a new todo.
+    'list' - list all todos.
+    'exit' - exit the application.
+            
+What would you like to do?`);
     }
 
     const handleUserAction = (action) => {
@@ -18,6 +24,15 @@ const AppController = (() => {
                 collectionManager.addTodo(todo);
                 console.log("New Todo Created:", todo);
                 break;
+            case "list":
+                const list = collectionManager.getAllTodos();
+                console.log("Todo List:", list);
+                break;
+            case "exit":
+                console.log("Exiting the application. Goodbye!");
+                break;
+            default:
+                console.log("Invalid action. Please choose 'new', 'list', or 'exit'.");
         }
     }
 

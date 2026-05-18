@@ -1,7 +1,7 @@
 import { createTodo } from './todo';
 import { collectionManager } from './collectionManager';
 
-const AppController = (() => {
+const AppManager = (() => {
     const getUserAction = () => {
         return prompt(
             `Menu:
@@ -70,4 +70,4 @@ Enter the id of the todo you want to delete:`
     return { getUserAction, handleUserAction }
 })();
 
-export { AppController }
+export { AppManager }

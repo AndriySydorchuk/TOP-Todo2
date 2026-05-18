@@ -20,16 +20,20 @@ What would you like to do?`);
                 break;
             case "list":
                 const list = collectionManager.getAllTodos();
+                alert(`Todo List:
+${collectionManager.getAllTodos().map((todo, index) => {
+                    return `${index + 1}. ${todo.title}`
+                }).join("\n")}`);
                 console.log("Todo List:", list);
                 break;
             case "delete":
                 handleDeleteAction();
                 break;
             case "exit":
-                console.log("Exiting the application. Goodbye!");
+                alert("Exiting the application. Goodbye!");
                 break;
             default:
-                console.log("Invalid action.");
+                alert("Invalid action.");
         }
     }
 

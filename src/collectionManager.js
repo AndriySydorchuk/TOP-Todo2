@@ -1,5 +1,7 @@
+import { storageManager } from './storageManager';
+
 const collectionManager = (() => {
-    let todoCollection = [];
+    let todoCollection = storageManager.loadList();
 
     function addTodo(todo) {
         todoCollection.push(todo);
@@ -9,7 +11,7 @@ const collectionManager = (() => {
         const formattedIndex = parseInt(todoIndex, 10) - 1;
         const removed = todoCollection.splice(formattedIndex, 1);
 
-        return removed.length > 0;
+        return removed.length > 1;
     }
 
     function getAllTodos() {

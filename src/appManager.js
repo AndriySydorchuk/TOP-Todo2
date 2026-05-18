@@ -1,5 +1,6 @@
 import { createTodo } from './todo';
 import { collectionManager } from './collectionManager';
+import { storageManager } from './storageManager';
 
 const AppManager = (() => {
     const getUserAction = () => {
@@ -19,9 +20,9 @@ What would you like to do?`);
                 handleNewTodo();
                 break;
             case "list":
-                const list = collectionManager.getAllTodos();
+                const list = storageManager.loadList();
                 alert(`Todo List:
-${collectionManager.getAllTodos().map((todo, index) => {
+${list.map((todo, index) => {
                     return `${index + 1}. ${todo.title}`
                 }).join("\n")}`);
                 console.log("Todo List:", list);
@@ -40,7 +41,7 @@ ${collectionManager.getAllTodos().map((todo, index) => {
     function handleDeleteAction() {
         const todoIndex = prompt(
             `Todo List:
-${collectionManager.getAllTodos().map((todo, index) => {
+${storageManager.loadList().map((todo, index) => {
                 return `${index + 1}. ${todo.title}`
             }).join("\n")}                    
 Enter the id of the todo you want to delete:`
@@ -48,10 +49,13 @@ Enter the id of the todo you want to delete:`
 
         const isDeleted = collectionManager.deleteTodo(todoIndex);
 
-        if (isDeleted)
-            console.log("Todo was successfully deleted");
-        else
-            console.log("Todo deletion failed.");
+        if (isDeleted) {
+            storageManager.saveList(collectionManager.getAllTodos());
+            alert("Todo was successfully deleted");
+        }
+        else {
+            alert("Todo deletion failed.");
+        }
     }
 
     function handleNewTodo() {
@@ -62,8 +66,15 @@ Enter the id of the todo you want to delete:`
 
         const todo = createTodo(title, description, dueDate, priority);
         collectionManager.addTodo(todo);
+        storageManager.saveList(collectionManager.getAllTodos());
 
-        console.log("New Todo Created:", todo);
+        alert(
+            `New Todo Created:
+            Title: ${todo.title}
+            Description: ${todo.description}
+            Due Date: ${todo.dueDate}
+            Priority: ${todo.priority}`
+        );
     }
 
 

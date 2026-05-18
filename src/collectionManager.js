@@ -5,7 +5,11 @@ const collectionManager = (() => {
         todoCollection.push(todo);
     }
 
-    return { addTodo };
+    function getAllTodos() {
+        return todoCollection;
+    }
+
+    return { addTodo, getAllTodos };
 })();
 
 export { collectionManager }

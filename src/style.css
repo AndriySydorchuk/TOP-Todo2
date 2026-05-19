@@ -30,6 +30,11 @@ body {
     gap: 50px;
 }
 
+.top-container {
+    display: flex;
+    gap: 20px;
+}
+
 .new-project-btn {
     cursor: pointer;
 }

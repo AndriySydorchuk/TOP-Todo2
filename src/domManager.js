@@ -46,14 +46,44 @@ const domManager = (() => {
             todoCard.classList.add("todo-card");
 
             const todoTitle = document.createElement("p");
-            todoTitle.classList.add("todo-title");
+            todoTitle.classList.add("todo-card-title");
             todoTitle.textContent = todo.title;
 
             todoCard.appendChild(todoTitle);
             todosContainer.appendChild(todoCard);
         })
 
+        handleTodoCardExpand(projectName);
+
         handleTodosBackBtn();
+    }
+
+    function handleTodoCardExpand(projectName) {
+        const projectTodosArr = collectionManager.getProjectTodos(projectName);
+
+        const todoCards = document.querySelectorAll(".todo-card");
+        todoCards.forEach(todoCard => {
+            todoCard.addEventListener("click", () => {
+                const todoCardTitle = todoCard.firstElementChild;
+
+                const todoObj = projectTodosArr.find((todo) => todo.title === todoCardTitle.textContent);
+
+                //check if already present or clear
+                todoCard.innerHTML = "";
+
+                //create descr paragraph and so on
+                const todoDescr = document.createElement("p");
+                todoDescr.textContent = `Description: ${todoObj.description}`;
+
+                const todoDueDate = document.createElement("p");
+                todoDueDate.textContent = `Due Date: ${todoObj.dueDate}`;
+
+                const todoPriority = document.createElement("p");
+                todoPriority.textContent = `Priority: ${todoObj.priority}`;
+
+                todoCard.append(todoCardTitle, todoDescr, todoDueDate, todoPriority);
+            })
+        })
     }
 
     function handleProjectCardClick() {

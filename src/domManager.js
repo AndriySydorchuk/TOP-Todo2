@@ -5,6 +5,7 @@ const domManager = (() => {
     function init() {
         renderProjectsView();
         handleProjectCardClick();
+        handleTodosBackBtn();
     }
 
     function renderProjectsView() {
@@ -68,6 +69,17 @@ const domManager = (() => {
 
                 renderTodosView(projectCard);
             })
+        })
+    }
+
+    function handleTodosBackBtn() {
+        const backBtn = document.querySelector(".todos-view .back-btn");
+        backBtn.addEventListener("click", () => {
+            const projectsView = document.querySelector(".projects-view");
+            const todosView = document.querySelector(".todos-view");
+
+            projectsView.classList.remove("hidden");
+            todosView.classList.add("hidden");
         })
     }
 

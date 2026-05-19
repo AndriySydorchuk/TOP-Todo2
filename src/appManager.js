@@ -60,21 +60,31 @@ Enter the id of the todo you want to delete:`
     }
 
     function handleNewTodo() {
-        const title = prompt("Enter the todo title:");
-        const description = prompt("Enter the todo description:");
-        const dueDate = prompt("Enter the due date (YYYY-MM-DD):");
-        const priority = prompt("Enter the priority (Low, Medium, High):");
+        //display projects
+        const projectNamesArr = collectionManager.getProjectNames();
+        const formattedProjectNames = `Projects: \n${projectNamesArr.map((name, index) => `${index + 1}. ${name}`).join("\n")}`;
 
-        const todo = createTodo(title, description, dueDate, priority);
-        collectionManager.addTodo(todo);
-        storageManager.saveList(collectionManager.getAllTodos());
+        //user chooses project
+        const selectedProjectName = prompt(`${formattedProjectNames}\nType name of the project in which you want to save your todo OR type new name to create new project and proceed:`);
+
+        const selectedTodosArr = collectionManager.getProjectTodos(selectedProjectName);
+
+        const title = prompt(`Project '${selectedProjectName}'\nEnter the todo title:`);
+        const description = prompt(`Project '${selectedProjectName}'\nEnter the todo description:`);
+        const dueDate = prompt(`Project '${selectedProjectName}'\nEnter the due date (YYYY-MM-DD):`);
+        const priority = prompt(`Project '${selectedProjectName}'\nEnter the priority (Low, Medium, High):`);
+
+        const newTodo = createTodo(title, description, dueDate, priority);
+        collectionManager.addTodo(newTodo, selectedProjectName);
+        storageManager.saveList(selectedProjectName, collectionManager.getProjectTodos(selectedProjectName));
 
         alert(
             `New Todo Created:
-            Title: ${todo.title}
-            Description: ${todo.description}
-            Due Date: ${todo.dueDate}
-            Priority: ${todo.priority}`
+            Project: ${selectedProjectName}
+            Title: ${newTodo.title}
+            Description: ${newTodo.description}
+            Due Date: ${newTodo.dueDate}
+            Priority: ${newTodo.priority}`
         );
     }
 

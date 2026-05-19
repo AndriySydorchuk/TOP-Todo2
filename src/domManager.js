@@ -4,8 +4,6 @@ import { collectionManager } from "./collectionManager"
 const domManager = (() => {
     function init() {
         renderProjectsView();
-        handleProjectCardClick();
-        handleTodosBackBtn();
     }
 
     function renderProjectsView() {
@@ -16,6 +14,7 @@ const domManager = (() => {
         const projectNamesArr = collectionManager.getProjectNames();
 
         const projectsGridEl = document.querySelector(".projects-grid");
+        projectsGridEl.innerHTML = "";
 
         projectNamesArr.forEach(projectName => {
             const card = document.createElement("div");
@@ -28,6 +27,8 @@ const domManager = (() => {
             card.appendChild(cardTitle);
             projectsGridEl.appendChild(card);
         })
+
+        handleProjectCardClick();
     }
 
     function renderTodosView(projectCard) {
@@ -37,6 +38,7 @@ const domManager = (() => {
         todosViewTitle.textContent = projectName;
 
         const todosContainer = document.querySelector(".todos-container");
+        todosContainer.innerHTML = "";
 
         const todosArr = collectionManager.getProjectTodos(projectName);
         todosArr.forEach(todo => {
@@ -50,6 +52,8 @@ const domManager = (() => {
             todoCard.appendChild(todoTitle);
             todosContainer.appendChild(todoCard);
         })
+
+        handleTodosBackBtn();
     }
 
     function handleProjectCardClick() {
@@ -80,6 +84,7 @@ const domManager = (() => {
 
             projectsView.classList.remove("hidden");
             todosView.classList.add("hidden");
+            renderProjectsView();
         })
     }
 

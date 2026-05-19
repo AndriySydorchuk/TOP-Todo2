@@ -2,7 +2,11 @@ import { storageManager } from './storageManager';
 
 const collectionManager = (() => {
     //object -> collection = {prName: todosArr, prName2: todosArr2}
-    let collectionObj = storageManager.loadAll();
+    let collectionObj;
+
+    function init() {
+        collectionObj = storageManager.loadAll();
+    }
 
     function addTodo(todoObj, projectName) {
         collectionObj[projectName] = todoObj;
@@ -29,6 +33,10 @@ const collectionManager = (() => {
         }
     }
 
+    function getProjectNames() {
+        return Object.keys(collectionObj);
+    }
+
     function getProjectTodos(projectName) {
         const todos = collectionObj[projectName];
 
@@ -39,10 +47,7 @@ const collectionManager = (() => {
         }
     }
 
-    let todoCollection = storageManager.loadList();
-
-
-    return { addTodo, deleteTodo, getProjectTodos };
+    return { init, addTodo, deleteTodo, getProjectNames, getProjectTodos };
 })();
 
 export { collectionManager }

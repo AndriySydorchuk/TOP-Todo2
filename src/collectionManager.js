@@ -27,7 +27,7 @@ const collectionManager = (() => {
             const isInRange = todoId >= 0 && todoId < selectedProject.length;
 
             if (isNumber && isInRange) {
-                const removed = selectedProject[todoId].splice(todoId, 1);
+                const removed = selectedProject.splice(todoId, 1);
 
                 return removed.length > 0 ? true : false;
             } else {

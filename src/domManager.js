@@ -2,6 +2,11 @@ import { storageManager } from "./storageManager"
 import { collectionManager } from "./collectionManager"
 
 const domManager = (() => {
+    function init() {
+        renderProjectsView();
+        handleProjectCardClick();
+    }
+
     function renderProjectsView() {
         //get project list
         //get projects view container
@@ -24,11 +29,49 @@ const domManager = (() => {
         })
     }
 
-    function renderTodosView() {
+    function renderTodosView(projectCard) {
+        const projectName = projectCard.firstElementChild.textContent;
 
+        const todosViewTitle = document.querySelector(".todos-title");
+        todosViewTitle.textContent = projectName;
+
+        const todosContainer = document.querySelector(".todos-container");
+
+        const todosArr = collectionManager.getProjectTodos(projectName);
+        todosArr.forEach(todo => {
+            const todoCard = document.createElement("div");
+            todoCard.classList.add("todo-card");
+
+            const todoTitle = document.createElement("p");
+            todoTitle.classList.add("todo-title");
+            todoTitle.textContent = todo.title;
+
+            todoCard.appendChild(todoTitle);
+            todosContainer.appendChild(todoCard);
+        })
     }
 
-    return { renderProjectsView, renderTodosView }
+    function handleProjectCardClick() {
+        //grab all project cards
+        //put click event listener on each card
+        //on click - hide projects view, display it's todos view
+
+        const projectCards = document.querySelectorAll(".project-card");
+
+        projectCards.forEach((projectCard) => {
+            projectCard.addEventListener("click", (e) => {
+                const projectView = document.querySelector(".projects-view");
+                const todosView = document.querySelector(".todos-view");
+
+                projectView.classList.add("hidden");
+                todosView.classList.remove("hidden");
+
+                renderTodosView(projectCard);
+            })
+        })
+    }
+
+    return { init }
 })();
 
 export { domManager };

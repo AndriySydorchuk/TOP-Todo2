@@ -143,8 +143,18 @@ const domManager = (() => {
 
             saveBtn.addEventListener("click", () => {
                 //check if new project name doesn't exist
+                const existingProjectNames = collectionManager.getProjectNames();
 
-                storageManager.saveList(projectNameInput.value, []);
+                const newProjectName = projectNameInput.value;
+
+                const matchingName = existingProjectNames.find((projectName) => projectName === newProjectName);
+
+                if (matchingName) {
+                    alert(`There's already project named '${newProjectName}'`);
+                    return;
+                }
+
+                storageManager.saveList(newProjectName, []);
 
                 projectNameInput.remove();
                 saveBtn.remove();

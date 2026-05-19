@@ -13,6 +13,7 @@ const AppManager = (() => {
         return prompt(
             `Menu:
     'new' - create a new todo.
+    'edit' - edit a todo
     'delete' - delete a todo.
     'list' - list all todos.
     'exit' - exit the application.
@@ -25,11 +26,14 @@ What would you like to do?`);
             case "new":
                 handleNewTodo();
                 break;
-            case "list":
-                handleListDisplay();
+            case "edit":
+                handleEditTodo();
                 break;
             case "delete":
                 handleDeleteAction();
+                break;
+            case "list":
+                handleListDisplay();
                 break;
             case "exit":
                 alert("Exiting the application. Goodbye!");
@@ -100,24 +104,82 @@ Enter the id of the todo you want to delete:`
         );
     }
 
+    function handleListDisplay() {
+        const projectNamesArr = collectionManager.getProjectNames();
+        const formattedProjectNames = `Projects: \n${projectNamesArr.map((name, index) => `${index + 1}. ${name}`).join("\n")}`;
+
+        const selectedProjectName = prompt(`${formattedProjectNames}\nType name of the project to see its todos:`);
+        const selectedTodosArr = collectionManager.getProjectTodos(selectedProjectName);
+
+        if (selectedTodosArr.length === 0) {
+            alert(`Project '${selectedProjectName}' does not have any todos.`);
+        } else {
+            alert(`Project '${selectedProjectName}':\n${selectedTodosArr.map((todo, index) => {
+                return `${index + 1}. ${todo.title}\n${todo.description}\n${todo.dueDate}\n${todo.priority}`
+            }).join("\n\n")}`)
+        }
+    }
+
+    function handleEditTodo() {
+        //display projects
+        const projectNamesArr = collectionManager.getProjectNames();
+        const formattedProjectNames = `Projects: \n${projectNamesArr.map((name, index) => `${index + 1}. ${name}`).join("\n")}`;
+
+        //ask user to select project
+        const selectedProjectName = prompt(`${formattedProjectNames}\nType name of the project in which you want to edit your todo:`);
+
+        const selectedTodosArr = collectionManager.getProjectTodos(selectedProjectName);
+
+        //display todos and ask user to select todo
+        const todoIndex = prompt(
+            `Project '${selectedProjectName}':
+${selectedTodosArr.map((todo, index) => {
+                return `${index + 1}. ${todo.title}`
+            }).join("\n")}                    
+Enter the id of the todo you want to edit:`
+        )
+
+        //format todoIndex
+        const todoIndexFormatted = Number.parseInt(todoIndex, 10) - 1;
+        const selectedTodo = selectedTodosArr[todoIndexFormatted];
+
+        //display todo info and ask user what he wants to edit or all
+        const propertyToEdit = prompt(`Project '${selectedProjectName}'\nTitle: ${selectedTodo.title}\n Description: ${selectedTodo.description}\nDue date: ${selectedTodo.dueDate}\nPriority: ${selectedTodo.priority}\n\nType name of the property (e.g. 'title') you want to edit OR type all if you want to rewrite whole todo:`);
+
+        switch (propertyToEdit.toLowerCase().replaceAll(" ", "")) {
+            case "title":
+                selectedTodo.title = prompt("Type new title:");
+                alert("New todo title successfully saved");
+                break;
+            case "description":
+                selectedTodo.description = prompt("Type new description:");
+                alert("New todo description successfully saved");
+                break;
+            case "duedate":
+                selectedTodo.dueDate = prompt("Type new due date (YYYY-MM-DD):");
+                alert("New todo due date successfully saved");
+                break;
+            case "priority":
+                selectedTodo.priority = prompt("Type new priority (Low, Medium, High):");
+                alert("New todo priority successfully saved");
+                break;
+            case "all":
+                selectedTodo.title = prompt("Type new title:");
+                selectedTodo.description = prompt("Type new description:");
+                selectedTodo.dueDate = prompt("Type new due date (YYYY-MM-DD):");
+                selectedTodo.priority = prompt("Type new priority (Low, Medium, High):");
+                alert("New todo info successfully saved");
+                break;
+            default:
+                alert("Invalid property");
+                break;
+        }
+    }
 
     return { init, getUserAction, handleUserAction }
 })();
 
-function handleListDisplay() {
-    const projectNamesArr = collectionManager.getProjectNames();
-    const formattedProjectNames = `Projects: \n${projectNamesArr.map((name, index) => `${index + 1}. ${name}`).join("\n")}`;
 
-    const selectedProjectName = prompt(`${formattedProjectNames}\nType name of the project to see its todos:`);
-    const selectedTodosArr = collectionManager.getProjectTodos(selectedProjectName);
 
-    if (selectedTodosArr.length === 0) {
-        alert(`Project '${selectedProjectName}' does not have any todos.`);
-    } else {
-        alert(`Project '${selectedProjectName}':\n${selectedTodosArr.map((todo, index) => {
-            return `${index + 1}. ${todo.title}\n${todo.description}\n${todo.dueDate}\n${todo.priority}`
-        }).join("\n\n")}`)
-    }
-}
 
 export { AppManager }

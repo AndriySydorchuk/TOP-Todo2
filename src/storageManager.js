@@ -1,17 +1,30 @@
 const storageManager = (() => {
-    function saveList(list) {
-        localStorage.setItem("list", JSON.stringify(list));
+    function saveList(name, list) {
+        localStorage.setItem(name, JSON.stringify(list));
     }
 
-    function loadList() {
-        const list = localStorage.getItem("list");
+    function loadList(name) {
+        const list = localStorage.getItem(name);
 
         if (!list) return [];
 
         return JSON.parse(list);
     }
 
-    return { saveList, loadList };
+    function loadAll() {
+        const allStorage = {};
+
+        for (let i = 0; i < localStorage.length; i++) {
+            const key = localStorage.key(i);
+            const value = localStorage.getItem(key);
+
+            allStorage[key] = value;
+        }
+
+        return allStorage;
+    }
+
+    return { saveList, loadList, loadAll };
 })();
 
 export { storageManager };

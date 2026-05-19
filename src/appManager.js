@@ -26,12 +26,7 @@ What would you like to do?`);
                 handleNewTodo();
                 break;
             case "list":
-                const list = storageManager.loadList();
-                alert(`Todo List:
-${list.map((todo, index) => {
-                    return `${index + 1}. ${todo.title}`
-                }).join("\n")}`);
-                console.log("Todo List:", list);
+                handleListDisplay();
                 break;
             case "delete":
                 handleDeleteAction();
@@ -86,5 +81,21 @@ Enter the id of the todo you want to delete:`
 
     return { init, getUserAction, handleUserAction }
 })();
+
+function handleListDisplay() {
+    const projectNamesArr = collectionManager.getProjectNames();
+    const formattedProjectNames = `Projects: \n${projectNamesArr.map((name, index) => `${index + 1}. ${name}`).join("\n")}`;
+
+    const selectedProjectName = prompt(`${formattedProjectNames}\nType name of the project to see its todos:`);
+    const selectedTodosArr = collectionManager.getProjectTodos(selectedProjectName);
+
+    if (selectedTodosArr.length === 0) {
+        alert(`Project '${selectedProjectName}' does not have any todos.`);
+    } else {
+        alert(`Project '${selectedProjectName}':\n${selectedTodosArr.map((todo, index) => {
+            return `${index + 1}. ${todo.title}\n${todo.description}\n${todo.dueDate}\n${todo.priority}`
+        }).join("\n\n")}`)
+    }
+}
 
 export { AppManager }

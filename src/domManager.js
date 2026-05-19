@@ -4,12 +4,15 @@ import { collectionManager } from "./collectionManager"
 const domManager = (() => {
     function init() {
         renderProjectsView();
+        handleNewProjectBtn();
     }
 
     function renderProjectsView() {
         //get project list
         //get projects view container
         //create card based on existing projects
+
+        collectionManager.init();
 
         const projectNamesArr = collectionManager.getProjectNames();
 
@@ -115,6 +118,43 @@ const domManager = (() => {
             projectsView.classList.remove("hidden");
             todosView.classList.add("hidden");
             renderProjectsView();
+        })
+    }
+
+    function handleNewProjectBtn() {
+        const newProjectBtn = document.querySelector(".new-project-btn");
+        newProjectBtn.addEventListener("click", () => {
+            //hide new project btn
+            newProjectBtn.classList.add("hidden");
+
+            //clear container
+            const container = document.querySelector(".top-container");
+
+            while (container.children.length > 1) {
+                container.lastElementChild.remove();
+            }
+
+            //create input element and save btn
+            const projectNameInput = document.createElement("input");
+            projectNameInput.placeholder = "Type new project name";
+
+            const saveBtn = document.createElement("button");
+            saveBtn.textContent = "Save";
+
+            saveBtn.addEventListener("click", () => {
+                //check if new project name doesn't exist
+
+                storageManager.saveList(projectNameInput.value, []);
+
+                projectNameInput.remove();
+                saveBtn.remove();
+
+                newProjectBtn.classList.remove("hidden");
+
+                renderProjectsView();
+            })
+
+            container.append(projectNameInput, saveBtn);
         })
     }
 

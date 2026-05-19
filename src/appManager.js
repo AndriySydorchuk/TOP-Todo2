@@ -40,18 +40,30 @@ What would you like to do?`);
     }
 
     function handleDeleteAction() {
+        //display projects
+        const projectNamesArr = collectionManager.getProjectNames();
+        const formattedProjectNames = `Projects: \n${projectNamesArr.map((name, index) => `${index + 1}. ${name}`).join("\n")}`;
+
+        //user chooses project
+        const selectedProjectName = prompt(`${formattedProjectNames}\nType name of the project in which you want to delete your todo:`);
+
+        const selectedTodosArr = collectionManager.getProjectTodos(selectedProjectName);
+
         const todoIndex = prompt(
-            `Todo List:
-${storageManager.loadList().map((todo, index) => {
+            `Project '${selectedProjectName}':
+${selectedTodosArr.map((todo, index) => {
                 return `${index + 1}. ${todo.title}`
             }).join("\n")}                    
 Enter the id of the todo you want to delete:`
         )
 
-        const isDeleted = collectionManager.deleteTodo(todoIndex);
+        //format todoIndex
+        const todoIndexFormatted = Number.parseInt(todoIndex, 10) - 1;
+
+        const isDeleted = collectionManager.deleteTodo(todoIndexFormatted, selectedProjectName);
 
         if (isDeleted) {
-            storageManager.saveList(collectionManager.getAllTodos());
+            storageManager.saveList(selectedProjectName, collectionManager.getProjectTodos(selectedProjectName));
             alert("Todo was successfully deleted");
         }
         else {

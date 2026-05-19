@@ -9,7 +9,12 @@ const collectionManager = (() => {
     }
 
     function addTodo(todoObj, projectName) {
-        collectionObj[projectName] = todoObj;
+        //create new project if doesn't exist
+        if (!collectionObj[projectName]) {
+            collectionObj[projectName] = [];
+        }
+
+        collectionObj[projectName].push(todoObj);
     }
 
     function deleteTodo(todoId, projectName) {

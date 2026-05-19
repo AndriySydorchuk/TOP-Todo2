@@ -58,3 +58,24 @@ body {
 .project-card-title {
     color: #fff;
 }
+
+.hidden {
+    display: none;
+}
+
+.todos-view {
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.todos-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.todo-card {
+    background-color: rgb(78, 78, 78);
+}

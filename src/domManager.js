@@ -3,36 +3,105 @@ import { collectionManager } from "./collectionManager"
 
 const domManager = (() => {
     function init() {
-        renderProjectsView();
         handleNewProjectBtn();
+        renderProjectsView();
+
     }
 
+    // PROJECTS VIEW
+
     function renderProjectsView() {
-        //get project list
-        //get projects view container
-        //create card based on existing projects
-
+        //update projects list
         collectionManager.init();
-
         const projectNamesArr = collectionManager.getProjectNames();
 
-        const projectsGridEl = document.querySelector(".projects-grid");
-        projectsGridEl.innerHTML = "";
+        const projectsGridElement = document.querySelector(".projects-grid");
+        //clear previous content
+        projectsGridElement.innerHTML = "";
 
+        //create card for each project
         projectNamesArr.forEach(projectName => {
             const card = document.createElement("div");
             card.classList.add("project-card");
+            card.textContent = projectName;
 
-            const cardTitle = document.createElement("p");
-            cardTitle.classList.add("project-card-title");
-            cardTitle.textContent = projectName;
-
-            card.appendChild(cardTitle);
-            projectsGridEl.appendChild(card);
+            projectsGridElement.appendChild(card);
         })
 
-        handleProjectCardClick();
+        //FIX
+        //handleProjectCardClick();
     }
+
+    function handleNewProjectBtn() {
+        const newProjectBtn = document.querySelector(".new-project-btn");
+        const container = document.querySelector(".top-container");
+
+        const nameInput = document.createElement("input");
+        nameInput.classList.add("project-name-input", "hidden");
+        nameInput.placeholder = "Type new project name";
+
+        const saveBtn = document.createElement("button");
+        saveBtn.classList.add("save-project-btn", "hidden");
+        saveBtn.textContent = "Save";
+
+        container.append(nameInput, saveBtn);
+
+        newProjectBtn.addEventListener("click", () => {
+            newProjectBtn.classList.add("hidden");
+
+            nameInput.classList.remove("hidden");
+            saveBtn.classList.remove("hidden");
+
+            nameInput.focus();
+        })
+
+        saveBtn.addEventListener("click", () => {
+            const existingProjectNames = collectionManager.getProjectNames();
+            const newProjectName = nameInput.value.trim();
+
+            if (!newProjectName) {
+                alert("Project name cannot be empty");
+                return;
+            }
+
+            if (existingProjectNames.includes(newProjectName)) {
+                alert(`There's already project named '${newProjectName}'`);
+                return;
+            }
+
+            storageManager.saveList(newProjectName, []);
+
+            nameInput.value = "";
+            nameInput.classList.add("hidden");
+            saveBtn.classList.add("hidden");
+
+            newProjectBtn.classList.remove("hidden");
+
+            renderProjectsView();
+        })
+    }
+
+    function handleProjectCardClick() {
+        //grab all project cards
+        //put click event listener on each card
+        //on click - hide projects view, display it's todos view
+
+        const projectCards = document.querySelectorAll(".project-card");
+
+        projectCards.forEach((projectCard) => {
+            projectCard.addEventListener("click", (e) => {
+                const projectView = document.querySelector(".projects-view");
+                const todosView = document.querySelector(".todos-view");
+
+                projectView.classList.add("hidden");
+                todosView.classList.remove("hidden");
+
+                renderTodosView(projectCard);
+            })
+        })
+    }
+
+    // TODOS VIEW
 
     function renderTodosView(projectCard) {
         const projectName = projectCard.firstElementChild.textContent;
@@ -89,26 +158,6 @@ const domManager = (() => {
         })
     }
 
-    function handleProjectCardClick() {
-        //grab all project cards
-        //put click event listener on each card
-        //on click - hide projects view, display it's todos view
-
-        const projectCards = document.querySelectorAll(".project-card");
-
-        projectCards.forEach((projectCard) => {
-            projectCard.addEventListener("click", (e) => {
-                const projectView = document.querySelector(".projects-view");
-                const todosView = document.querySelector(".todos-view");
-
-                projectView.classList.add("hidden");
-                todosView.classList.remove("hidden");
-
-                renderTodosView(projectCard);
-            })
-        })
-    }
-
     function handleTodosBackBtn() {
         const backBtn = document.querySelector(".todos-view .back-btn");
         backBtn.addEventListener("click", () => {
@@ -118,53 +167,6 @@ const domManager = (() => {
             projectsView.classList.remove("hidden");
             todosView.classList.add("hidden");
             renderProjectsView();
-        })
-    }
-
-    function handleNewProjectBtn() {
-        const newProjectBtn = document.querySelector(".new-project-btn");
-        newProjectBtn.addEventListener("click", () => {
-            //hide new project btn
-            newProjectBtn.classList.add("hidden");
-
-            //clear container
-            const container = document.querySelector(".top-container");
-
-            while (container.children.length > 1) {
-                container.lastElementChild.remove();
-            }
-
-            //create input element and save btn
-            const projectNameInput = document.createElement("input");
-            projectNameInput.placeholder = "Type new project name";
-
-            const saveBtn = document.createElement("button");
-            saveBtn.textContent = "Save";
-
-            saveBtn.addEventListener("click", () => {
-                //check if new project name doesn't exist
-                const existingProjectNames = collectionManager.getProjectNames();
-
-                const newProjectName = projectNameInput.value;
-
-                const matchingName = existingProjectNames.find((projectName) => projectName === newProjectName);
-
-                if (matchingName) {
-                    alert(`There's already project named '${newProjectName}'`);
-                    return;
-                }
-
-                storageManager.saveList(newProjectName, []);
-
-                projectNameInput.remove();
-                saveBtn.remove();
-
-                newProjectBtn.classList.remove("hidden");
-
-                renderProjectsView();
-            })
-
-            container.append(projectNameInput, saveBtn);
         })
     }
 

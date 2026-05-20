@@ -53,15 +53,7 @@ body {
     width: 100px;
     height: 100px;
     cursor: pointer;
-    transition: background .3s ease-in-out;
-}
-
-.project-card:hover {
-    background-color: rgb(52, 52, 52);
-}
-
-.project-card-title {
-    color: #fff;
+    color: #fff
 }
 
 .todos-view {

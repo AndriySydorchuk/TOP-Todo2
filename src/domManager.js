@@ -6,6 +6,7 @@ const domManager = (() => {
         handleNewProjectBtn();
         renderProjectsView();
 
+        handleTodosBackBtn();
     }
 
     // PROJECTS VIEW
@@ -28,8 +29,7 @@ const domManager = (() => {
             projectsGridElement.appendChild(card);
         })
 
-        //FIX
-        //handleProjectCardClick();
+        handleProjectCardClick();
     }
 
     function handleNewProjectBtn() {
@@ -82,14 +82,10 @@ const domManager = (() => {
     }
 
     function handleProjectCardClick() {
-        //grab all project cards
-        //put click event listener on each card
-        //on click - hide projects view, display it's todos view
-
         const projectCards = document.querySelectorAll(".project-card");
 
         projectCards.forEach((projectCard) => {
-            projectCard.addEventListener("click", (e) => {
+            projectCard.addEventListener("click", () => {
                 const projectView = document.querySelector(".projects-view");
                 const todosView = document.querySelector(".todos-view");
 
@@ -104,7 +100,7 @@ const domManager = (() => {
     // TODOS VIEW
 
     function renderTodosView(projectCard) {
-        const projectName = projectCard.firstElementChild.textContent;
+        const projectName = projectCard.textContent;
 
         const todosViewTitle = document.querySelector(".todos-title");
         todosViewTitle.textContent = projectName;
@@ -126,21 +122,18 @@ const domManager = (() => {
         })
 
         handleTodoCardExpand(projectName);
-
-        handleTodosBackBtn();
     }
 
     function handleTodoCardExpand(projectName) {
         const projectTodosArr = collectionManager.getProjectTodos(projectName);
 
         const todoCards = document.querySelectorAll(".todo-card");
-        todoCards.forEach(todoCard => {
+        todoCards.forEach((todoCard, index) => {
             todoCard.addEventListener("click", () => {
                 const todoCardTitle = todoCard.firstElementChild;
 
-                const todoObj = projectTodosArr.find((todo) => todo.title === todoCardTitle.textContent);
+                const todoObj = projectTodosArr[index];
 
-                //check if already present or clear
                 todoCard.innerHTML = "";
 
                 //create descr paragraph and so on

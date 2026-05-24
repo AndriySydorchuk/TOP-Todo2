@@ -111,8 +111,6 @@ const domManager = (() => {
         const todosContainer = document.querySelector(".todos-container");
         todosContainer.innerHTML = "";
 
-        handleDeleteProjectBtn();
-
         //create cards
         const todosArr = collectionManager.getProjectTodos(projectName);
         todosArr.forEach((todo, index) => {
@@ -146,6 +144,8 @@ const domManager = (() => {
             todosContainer.appendChild(todoCard);
         })
 
+        handleEditProjectBtn();
+        handleDeleteProjectBtn();
         handleEditTodoBtns(projectName);
         handleDeleteTodoBtns(projectName);
         handleTodoCardExpand(projectName);
@@ -301,6 +301,66 @@ const domManager = (() => {
 
             renderProjectsView();
         })
+    }
+
+    function handleEditProjectBtn() {
+        const container = document.querySelector(".todos-header-actions");
+
+        const nameInput = document.createElement("input");
+        nameInput.classList.add("hidden");
+        nameInput.placeholder = "Type new project name";
+
+        const saveBtn = document.createElement("button");
+        saveBtn.classList.add("hidden");
+        saveBtn.textContent = "Save";
+
+        container.append(nameInput, saveBtn);
+
+        const editProjectBtn = document.querySelector(".edit-project-btn");
+        const todosTitle = document.querySelector(".todos-title");
+
+        const currentProjectName = todosTitle.textContent.trim();
+
+        editProjectBtn.addEventListener("click", () => {
+            todosTitle.classList.add("hidden");
+            editProjectBtn.classList.add("hidden");
+            document.querySelector(".delete-project-btn").classList.add("hidden");
+
+            nameInput.classList.remove("hidden");
+            saveBtn.classList.remove("hidden");
+
+            nameInput.focus();
+        })
+
+        saveBtn.addEventListener("click", () => {
+            const existingProjectNames = collectionManager.getProjectNames();
+            const newProjectName = nameInput.value.trim();
+
+            if (!newProjectName) {
+                alert("Project name cannot be empty");
+                return;
+            }
+
+            if (existingProjectNames.includes(newProjectName)) {
+                alert(`There's already project named '${newProjectName}'`);
+                return;
+            }
+
+            storageManager.saveList(newProjectName, collectionManager.getProjectTodos(currentProjectName));
+            storageManager.removeList(currentProjectName);
+
+            nameInput.value = "";
+            nameInput.classList.add("hidden");
+            saveBtn.classList.add("hidden");
+
+            todosTitle.classList.remove("hidden");
+            editProjectBtn.classList.remove("hidden");
+            document.querySelector(".delete-project-btn").classList.remove("hidden");
+
+            collectionManager.init();
+            renderTodosView(newProjectName);
+        })
+
     }
 
     return { init }

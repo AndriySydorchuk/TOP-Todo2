@@ -24,7 +24,11 @@ const storageManager = (() => {
         return allStorage;
     }
 
-    return { saveList, loadList, loadAll };
+    function removeList(key) {
+        localStorage.removeItem(key);
+    }
+
+    return { saveList, removeList, loadList, loadAll };
 })();
 
 export { storageManager };

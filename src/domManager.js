@@ -50,7 +50,7 @@ const domManager = (() => {
         saveBtn.textContent = "Save";
 
         const cancelBtn = document.createElement("button");
-        cancelBtn.classList.add("hidden");
+        cancelBtn.classList.add("cancel-btn", "hidden");
         cancelBtn.textContent = "Cancel";
 
         container.append(nameInput, saveBtn, cancelBtn);

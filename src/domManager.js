@@ -110,18 +110,26 @@ const domManager = (() => {
         todosContainer.innerHTML = "";
 
         const todosArr = collectionManager.getProjectTodos(projectName);
-        todosArr.forEach(todo => {
+        todosArr.forEach((todo, index) => {
             const todoCard = document.createElement("div");
             todoCard.classList.add("todo-card");
+            todoCard.dataset.id = index;
 
             const todoTitle = document.createElement("p");
             todoTitle.classList.add("todo-card-title");
             todoTitle.textContent = todo.title;
 
+            //create delete todo btn
+            const deleteTodoBtn = document.createElement("button");
+            deleteTodoBtn.textContent = "Delete";
+            deleteTodoBtn.classList.add("delete-todo-btn");
+            todoTitle.appendChild(deleteTodoBtn);
+
             todoCard.appendChild(todoTitle);
             todosContainer.appendChild(todoCard);
         })
 
+        handleDeleteTodoBtns(projectName);
         handleTodoCardExpand(projectName);
     }
 
@@ -198,6 +206,31 @@ const domManager = (() => {
         cancelBtn.addEventListener("click", () => {
             modalController.resetInputs();
             modalController.hide();
+        })
+    }
+
+    function handleDeleteTodoBtns(projectName) {
+        const deleteBtns = document.querySelectorAll(".delete-todo-btn");
+        deleteBtns.forEach((deleteBtn) => {
+            deleteBtn.addEventListener("click", (e) => {
+                e.stopPropagation();
+
+                const todoCard = deleteBtn.closest(".todo-card");
+
+                const todoToDeleteId = Number.parseInt(todoCard.dataset.id, 10);
+
+                const isDeleted = collectionManager.deleteTodo(todoToDeleteId, projectName);
+
+                if (isDeleted) {
+                    storageManager.saveList(projectName, collectionManager.getProjectTodos(projectName));
+                    alert("Todo was successfully deleted");
+                    renderTodosView(projectName);
+                }
+                else {
+                    alert("Todo deletion failed.");
+                }
+
+            })
         })
     }
 

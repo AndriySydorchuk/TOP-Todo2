@@ -4,6 +4,8 @@ import { createTodo } from './todo';
 import { modalController } from './modalController';
 
 const domManager = (() => {
+    let editingTodoId = null;
+
     function init() {
         handleNewProjectBtn();
         renderProjectsView();
@@ -118,20 +120,33 @@ const domManager = (() => {
             todoCard.classList.add("todo-card");
             todoCard.dataset.id = index;
 
+            const todoHeader = document.createElement("div");
+            todoHeader.classList.add("todo-card-header");
+
+            const todoActions = document.createElement("div");
+            todoActions.classList.add("todo-card-actions");
+
             const todoTitle = document.createElement("p");
             todoTitle.classList.add("todo-card-title");
             todoTitle.textContent = todo.title;
+
+            //create edit todo btn
+            const editTodoBtn = document.createElement("button");
+            editTodoBtn.textContent = "Edit";
+            editTodoBtn.classList.add("edit-todo-btn");
 
             //create delete todo btn
             const deleteTodoBtn = document.createElement("button");
             deleteTodoBtn.textContent = "Delete";
             deleteTodoBtn.classList.add("delete-todo-btn");
-            todoTitle.appendChild(deleteTodoBtn);
 
-            todoCard.appendChild(todoTitle);
+            todoActions.append(editTodoBtn, deleteTodoBtn);
+            todoHeader.append(todoTitle, todoActions);
+            todoCard.appendChild(todoHeader);
             todosContainer.appendChild(todoCard);
         })
 
+        handleEditTodoBtns(projectName);
         handleDeleteTodoBtns(projectName);
         handleTodoCardExpand(projectName);
     }
@@ -196,8 +211,20 @@ const domManager = (() => {
 
             const projectName = document.querySelector(".todos-title").textContent.trim();
 
-            const newTodo = createTodo(newTodoValues.title, newTodoValues.descr, newTodoValues.dueDate, newTodoValues.priority);
-            collectionManager.addTodo(newTodo, projectName);
+            const todo = createTodo(
+                newTodoValues.title,
+                newTodoValues.description,
+                newTodoValues.dueDate,
+                newTodoValues.priority
+            )
+
+            if (editingTodoId !== null) {
+                collectionManager.updateTodo(projectName, editingTodoId, todo);
+                editingTodoId = null;
+            } else {
+                collectionManager.addTodo(todo, projectName);
+            }
+
             storageManager.saveList(projectName, collectionManager.getProjectTodos(projectName));
 
             modalController.resetInputs();
@@ -209,6 +236,26 @@ const domManager = (() => {
         cancelBtn.addEventListener("click", () => {
             modalController.resetInputs();
             modalController.hide();
+        })
+    }
+
+    function handleEditTodoBtns(projectName) {
+        const editBtns = document.querySelectorAll(".edit-todo-btn");
+
+        editBtns.forEach((editBtn) => {
+            editBtn.addEventListener("click", (e) => {
+                e.stopPropagation();
+
+                const todoCard = editBtn.closest(".todo-card");
+                const todoId = Number.parseInt(todoCard.dataset.id, 10);
+
+                const todoObj = collectionManager.getProjectTodos(projectName)[todoId];
+
+                editingTodoId = todoId;
+
+                modalController.setInputValues(todoObj);
+                modalController.show();
+            })
         })
     }
 

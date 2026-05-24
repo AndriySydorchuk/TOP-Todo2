@@ -12,10 +12,6 @@
 body {
     min-height: 100dvh;
     background-color: rgb(52, 52, 52);
-    /* display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center; */
 }
 
 .main {
@@ -37,6 +33,18 @@ body {
 
 .new-project-btn {
     cursor: pointer;
+    background-color: rgb(175, 41, 41);
+    color: #fff;
+    border: 0px;
+    padding: 6px 12px;
+    font-size: 20px;
+    font-weight: bold;
+    border-radius: 5px;
+    box-shadow: 0px 0px 15px 1px #00000091;
+}
+
+.new-project-btn:hover {
+    background-color: rgb(215, 50, 50);
 }
 
 .projects-grid {

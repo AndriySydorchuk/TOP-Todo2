@@ -69,6 +69,11 @@ body {
     gap: 10px;
 }
 
+.todos-header {
+    display: flex;
+    justify-content: space-between;
+}
+
 .todo-card {
     background-color: rgb(78, 78, 78);
 }

@@ -329,7 +329,11 @@ const domManager = (() => {
         saveBtn.classList.add("hidden");
         saveBtn.textContent = "Save";
 
-        container.append(nameInput, saveBtn);
+        const cancelBtn = document.createElement("button");
+        cancelBtn.classList.add("hidden");
+        cancelBtn.textContent = "Cancel";
+
+        container.append(nameInput, saveBtn, cancelBtn);
 
         const editProjectBtn = document.querySelector(".edit-project-btn");
         const todosTitle = document.querySelector(".todos-title");
@@ -343,6 +347,7 @@ const domManager = (() => {
 
             nameInput.classList.remove("hidden");
             saveBtn.classList.remove("hidden");
+            cancelBtn.classList.remove("hidden");
 
             nameInput.focus();
         })
@@ -367,6 +372,7 @@ const domManager = (() => {
             nameInput.value = "";
             nameInput.classList.add("hidden");
             saveBtn.classList.add("hidden");
+            cancelBtn.classList.add("hidden");
 
             todosTitle.classList.remove("hidden");
             editProjectBtn.classList.remove("hidden");
@@ -374,6 +380,17 @@ const domManager = (() => {
 
             collectionManager.init();
             renderTodosView(newProjectName);
+        })
+
+        cancelBtn.addEventListener("click", () => {
+            nameInput.value = "";
+            nameInput.classList.add("hidden");
+            saveBtn.classList.add("hidden");
+            cancelBtn.classList.add("hidden");
+
+            todosTitle.classList.remove("hidden");
+            editProjectBtn.classList.remove("hidden");
+            document.querySelector(".delete-project-btn").classList.remove("hidden");
         })
 
     }

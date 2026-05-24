@@ -73,6 +73,19 @@ body {
     background-color: rgb(78, 78, 78);
 }
 
+.newtodo-modal {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.newtodo-modal-content {
+    background-color: rgb(44, 44, 44);
+
+}
+
 /* keep at the end of the file */
 .hidden {
     display: none;

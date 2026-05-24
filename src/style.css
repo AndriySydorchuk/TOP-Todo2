@@ -73,6 +73,11 @@ body {
     background-color: rgb(78, 78, 78);
 }
 
+.todo-card-title {
+    display: flex;
+    justify-content: space-between;
+}
+
 .newtodo-modal {
     position: fixed;
     inset: 0;

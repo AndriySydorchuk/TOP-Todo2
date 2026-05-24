@@ -78,9 +78,14 @@ body {
     background-color: rgb(78, 78, 78);
 }
 
-.todo-card-title {
+.todo-card-header {
     display: flex;
     justify-content: space-between;
+}
+
+.todo-card-actions {
+    display: flex;
+    gap: 10px;
 }
 
 .newtodo-modal {

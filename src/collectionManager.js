@@ -52,7 +52,21 @@ const collectionManager = (() => {
         }
     }
 
-    return { init, addTodo, deleteTodo, getProjectNames, getProjectTodos };
+    function updateTodo(projectName, todoId, updatedTodo) {
+        const selectedProject = collectionObj[projectName];
+
+        if (!selectedProject) return false;
+
+        if (!Number.isInteger(todoId)) return false;
+
+        if (todoId < 0 || todoId >= selectedProject.length) return false;
+
+        selectedProject[todoId] = updatedTodo;
+
+        return true;
+    }
+
+    return { init, addTodo, deleteTodo, getProjectNames, getProjectTodos, updateTodo };
 })();
 
 export { collectionManager }

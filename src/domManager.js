@@ -49,13 +49,18 @@ const domManager = (() => {
         saveBtn.classList.add("save-project-btn", "hidden");
         saveBtn.textContent = "Save";
 
-        container.append(nameInput, saveBtn);
+        const cancelBtn = document.createElement("button");
+        cancelBtn.classList.add("hidden");
+        cancelBtn.textContent = "Cancel";
+
+        container.append(nameInput, saveBtn, cancelBtn);
 
         newProjectBtn.addEventListener("click", () => {
             newProjectBtn.classList.add("hidden");
 
             nameInput.classList.remove("hidden");
             saveBtn.classList.remove("hidden");
+            cancelBtn.classList.remove("hidden");
 
             nameInput.focus();
         })
@@ -79,11 +84,21 @@ const domManager = (() => {
             nameInput.value = "";
             nameInput.classList.add("hidden");
             saveBtn.classList.add("hidden");
+            cancelBtn.classList.add("hidden");
 
             newProjectBtn.classList.remove("hidden");
 
             renderProjectsView();
         })
+
+        cancelBtn.addEventListener("click", () => {
+            nameInput.value = "";
+            nameInput.classList.add("hidden");
+            saveBtn.classList.add("hidden");
+            cancelBtn.classList.add("hidden");
+
+            newProjectBtn.classList.remove("hidden");
+        });
     }
 
     function handleProjectCardClick() {

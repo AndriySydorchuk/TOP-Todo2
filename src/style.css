@@ -37,10 +37,10 @@ body {
     color: #fff;
     border: 0px;
     padding: 6px 12px;
-    font-size: 20px;
+    font-size: 18px;
     font-weight: bold;
     border-radius: 5px;
-    box-shadow: 0px 0px 15px 1px #00000091;
+    box-shadow: 0px 0px 5px 1px #0000005d;
 }
 
 .new-project-btn:hover {
@@ -107,6 +107,50 @@ body {
 .newtodo-modal-content {
     background-color: rgb(44, 44, 44);
 
+}
+
+.project-name-input {
+    padding: 5px;
+    border-radius: 5px;
+    border: 0;
+    background-color: rgb(78, 78, 78);
+    color: #fff;
+}
+
+.project-name-input::placeholder {
+    color: #ffffff76;
+}
+
+.save-project-btn {
+    cursor: pointer;
+    background-color: rgb(175, 41, 41);
+    border: 0;
+    color: #fff;
+    padding: 6px 12px;
+    font-size: 16px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 6px 1px #00000035;
+}
+
+.save-project-btn:hover {
+    background-color: rgb(215, 50, 50);
+    outline: 1px solid #fff;
+}
+
+.cancel-btn {
+    cursor: pointer;
+    background-color: rgb(44, 44, 44);
+    color: #fff;
+    border: 0;
+    padding: 6px 12px;
+    font-size: 16px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 6px 1px #00000035;
+}
+
+.cancel-btn:hover {
+    background-color: rgb(64, 64, 64);
+    outline: 1px solid #fff;
 }
 
 /* keep at the end of the file */

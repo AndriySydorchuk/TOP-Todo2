@@ -109,6 +109,9 @@ const domManager = (() => {
         const todosContainer = document.querySelector(".todos-container");
         todosContainer.innerHTML = "";
 
+        handleDeleteProjectBtn();
+
+        //create cards
         const todosArr = collectionManager.getProjectTodos(projectName);
         todosArr.forEach((todo, index) => {
             const todoCard = document.createElement("div");
@@ -231,6 +234,25 @@ const domManager = (() => {
                 }
 
             })
+        })
+    }
+
+    function handleDeleteProjectBtn() {
+        const deleteBtn = document.querySelector(".delete-project-btn");
+
+        deleteBtn.addEventListener("click", (e) => {
+            const projectName = document.querySelector(".todos-title").textContent.trim();
+
+            storageManager.removeList(projectName);
+            collectionManager.init();
+
+            const todosView = document.querySelector(".todos-view");
+            const projectsView = document.querySelector(".projects-view");
+
+            todosView.classList.add("hidden");
+            projectsView.classList.remove("hidden");
+
+            renderProjectsView();
         })
     }
 

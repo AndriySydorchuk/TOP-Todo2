@@ -12,6 +12,8 @@ const domManager = (() => {
 
         handleNewTodoBtn();
         handleTodosBackBtn();
+        handleEditProjectBtn();
+        handleDeleteProjectBtn();
     }
 
     // PROJECTS VIEW
@@ -159,8 +161,6 @@ const domManager = (() => {
             todosContainer.appendChild(todoCard);
         })
 
-        handleEditProjectBtn();
-        handleDeleteProjectBtn();
         handleEditTodoBtns(projectName);
         handleDeleteTodoBtns(projectName);
         handleTodoCardExpand(projectName);
@@ -201,6 +201,21 @@ const domManager = (() => {
 
             projectsView.classList.remove("hidden");
             todosView.classList.add("hidden");
+
+            const nameInput = document.querySelector(".edit-project-name-input");
+            const saveBtn = document.querySelector(".save-edit-project-btn");
+            const cancelBtn = document.querySelector(".cancel-edit-project-btn");
+
+            nameInput.value = "";
+
+            nameInput.classList.add("hidden");
+            saveBtn.classList.add("hidden");
+            cancelBtn.classList.add("hidden");
+
+            document.querySelector(".todos-title").classList.remove("hidden");
+            document.querySelector(".edit-project-btn").classList.remove("hidden");
+            document.querySelector(".delete-project-btn").classList.remove("hidden");
+
             renderProjectsView();
         })
     }
@@ -322,15 +337,15 @@ const domManager = (() => {
         const container = document.querySelector(".todos-header-actions");
 
         const nameInput = document.createElement("input");
-        nameInput.classList.add("hidden");
+        nameInput.classList.add("edit-project-name-input", "hidden");
         nameInput.placeholder = "Type new project name";
 
         const saveBtn = document.createElement("button");
-        saveBtn.classList.add("hidden");
+        saveBtn.classList.add("save-edit-project-btn", "hidden");
         saveBtn.textContent = "Save";
 
         const cancelBtn = document.createElement("button");
-        cancelBtn.classList.add("hidden");
+        cancelBtn.classList.add("cancel-edit-project-btn", "hidden");
         cancelBtn.textContent = "Cancel";
 
         container.append(nameInput, saveBtn, cancelBtn);

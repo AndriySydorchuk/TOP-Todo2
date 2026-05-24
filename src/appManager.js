@@ -2,7 +2,7 @@ import { createTodo } from './todo';
 import { collectionManager } from './collectionManager';
 import { storageManager } from './storageManager';
 
-const AppManager = (() => {
+const appManager = (() => {
     const init = () => {
         if (localStorage.getItem("default") === null) {
             storageManager.saveList("default", []);
@@ -182,4 +182,4 @@ Enter the id of the todo you want to edit:`
 
 
 
-export { AppManager }
+export { appManager }

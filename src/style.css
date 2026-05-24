@@ -85,6 +85,7 @@ body {
 .todos-header {
     display: flex;
     justify-content: space-between;
+    align-items: center;
 }
 
 .todo-card {
@@ -155,6 +156,43 @@ body {
 
 .cancel-btn:hover {
     background-color: rgb(64, 64, 64);
+    outline: 1px solid #fff;
+}
+
+.todos-title {
+    font-size: 36px;
+    font-weight: bold;
+}
+
+.edit-project-btn {
+    cursor: pointer;
+    background-color: rgb(78, 78, 78);
+    color: #fff;
+    border: 0;
+    padding: 6px 12px;
+    font-size: 14px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 6px 1px #00000035;
+}
+
+.edit-project-btn:hover {
+    background-color: rgb(90, 90, 90);
+    outline: 1px solid #fff;
+}
+
+.delete-project-btn {
+    cursor: pointer;
+    background-color: rgb(175, 41, 41);
+    color: #fff;
+    border: 0;
+    padding: 6px 12px;
+    font-size: 14px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 6px 1px #00000035;
+}
+
+.delete-project-btn:hover {
+    background-color: rgb(215, 50, 50);
     outline: 1px solid #fff;
 }
 

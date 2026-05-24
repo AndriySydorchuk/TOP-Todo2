@@ -15,9 +15,8 @@ body {
 }
 
 .main {
-    margin: 100px 150px;
+    margin: 0px 100px 150px 100px;
     padding: 50px 80px;
-    background-color: rgb(64, 64, 64);
 }
 
 .projects-view {
@@ -54,14 +53,20 @@ body {
 }
 
 .project-card {
-    background-color: rgb(78, 78, 78);
+    background-color: rgb(64, 64, 64);
+    border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 100px;
-    height: 100px;
+    min-width: 150px;
+    min-height: 150px;
     cursor: pointer;
-    color: #fff
+    color: #fff;
+    box-shadow: 0px 0px 6px 1px #00000035;
+}
+
+.project-card:hover {
+    background-color: rgb(78, 78, 78);
 }
 
 .todos-view {

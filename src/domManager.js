@@ -1,11 +1,14 @@
 import { storageManager } from "./storageManager"
 import { collectionManager } from "./collectionManager"
+import { createTodo } from './todo';
+import { modalController } from './modalController';
 
 const domManager = (() => {
     function init() {
         handleNewProjectBtn();
         renderProjectsView();
 
+        handleNewTodoBtn();
         handleTodosBackBtn();
     }
 
@@ -92,16 +95,14 @@ const domManager = (() => {
                 projectView.classList.add("hidden");
                 todosView.classList.remove("hidden");
 
-                renderTodosView(projectCard);
+                renderTodosView(projectCard.textContent);
             })
         })
     }
 
     // TODOS VIEW
 
-    function renderTodosView(projectCard) {
-        const projectName = projectCard.textContent;
-
+    function renderTodosView(projectName) {
         const todosViewTitle = document.querySelector(".todos-title");
         todosViewTitle.textContent = projectName;
 
@@ -160,6 +161,43 @@ const domManager = (() => {
             projectsView.classList.remove("hidden");
             todosView.classList.add("hidden");
             renderProjectsView();
+        })
+    }
+
+    function handleNewTodoBtn() {
+        const newTodoBtn = document.querySelector(".new-todo-btn");
+
+        const modal = modalController.create();
+        const saveBtn = modal.querySelector(".save-todo-btn");
+        const cancelBtn = modal.querySelector(".cancel-btn");
+
+        newTodoBtn.addEventListener("click", () => {
+            modalController.show();
+        })
+
+        saveBtn.addEventListener("click", () => {
+            const newTodoValues = modalController.getInputValues();
+
+            if (newTodoValues.title === "" || newTodoValues.priority === "") {
+                alert("Title and priority fields cannot be empty");
+                return;
+            }
+
+            const projectName = document.querySelector(".todos-title").textContent.trim();
+
+            const newTodo = createTodo(newTodoValues.title, newTodoValues.descr, newTodoValues.dueDate, newTodoValues.priority);
+            collectionManager.addTodo(newTodo, projectName);
+            storageManager.saveList(projectName, collectionManager.getProjectTodos(projectName));
+
+            modalController.resetInputs();
+            modalController.hide();
+
+            renderTodosView(projectName);
+        })
+
+        cancelBtn.addEventListener("click", () => {
+            modalController.resetInputs();
+            modalController.hide();
         })
     }
 

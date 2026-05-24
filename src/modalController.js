@@ -91,10 +91,19 @@ const modalController = (() => {
 
         return {
             title: titleInput.value,
-            descr: descrInput.value,
+            description: descrInput.value,
             dueDate: dueDateInput.value,
             priority: priorityInput.value
         }
+    }
+
+    function setInputValues(todoObj) {
+        const modal = document.querySelector(".newtodo-modal");
+
+        modal.querySelector("#title-input").value = todoObj.title;
+        modal.querySelector("#descr-input").value = todoObj.description;
+        modal.querySelector("#duedate-input").value = todoObj.dueDate;
+        modal.querySelector("#priority-input").value = todoObj.priority;
     }
 
     function resetInputs() {
@@ -105,7 +114,7 @@ const modalController = (() => {
     }
 
 
-    return { create, show, hide, getInputValues, resetInputs };
+    return { create, show, hide, getInputValues, setInputValues, resetInputs };
 })();
 
 export { modalController };

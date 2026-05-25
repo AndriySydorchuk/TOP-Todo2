@@ -114,6 +114,18 @@ const domManager = (() => {
                 projectView.classList.add("hidden");
                 todosView.classList.remove("hidden");
 
+                const nameInput = document.querySelector(".project-name-input");
+                const saveBtn = document.querySelector(".save-project-btn");
+                const cancelBtn = document.querySelector(".cancel-btn");
+                const newProjectBtn = document.querySelector(".new-project-btn");
+
+                nameInput.value = "";
+                nameInput.classList.add("hidden");
+                saveBtn.classList.add("hidden");
+                cancelBtn.classList.add("hidden");
+
+                newProjectBtn.classList.remove("hidden");
+
                 renderTodosView(projectCard.textContent);
             })
         })

@@ -19,6 +19,7 @@ const modalController = (() => {
         priorityInput.append(...options);
 
         const buttonsWrapper = document.createElement("div");
+        buttonsWrapper.classList.add("modal-buttons-wrapper");
         const saveBtn = document.createElement("button");
         saveBtn.classList.add("save-todo-btn");
         saveBtn.textContent = "Save";
@@ -43,6 +44,7 @@ const modalController = (() => {
 
     function createInput(inputTag, inputType, inputId, labelText) {
         const container = document.createElement("div");
+        container.classList.add(`${inputId}-box`);
 
         const label = document.createElement("label");
         label.htmlFor = inputId;

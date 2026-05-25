@@ -111,18 +111,48 @@ body {
 .newtodo-modal {
     position: fixed;
     inset: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
 
 .newtodo-modal-content {
-    background-color: rgb(44, 44, 44);
+    position: absolute;
+    top: 130px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgb(54, 54, 54);
+    padding: 30px;
+    border: 1px solid #fff;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px 1px #00000051;
+}
 
+.modal-buttons-wrapper {
+    margin-top: 30px;
+    display: flex;
+    gap: 20px;
+}
+
+.title-input-box,
+.descr-input-box,
+.duedate-input-box,
+.priority-input-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 30px;
+    margin-bottom: 10px;
+}
+
+#priority-input,
+#duedate-input {
+    width: 187px;
 }
 
 .project-name-input,
-.edit-project-name-input {
+.edit-project-name-input,
+#duedate-input,
+#priority-input,
+#descr-input,
+#title-input {
     padding: 5px;
     border-radius: 5px;
     border: 0;
@@ -136,7 +166,8 @@ body {
 }
 
 .save-project-btn,
-.save-edit-project-btn {
+.save-edit-project-btn,
+.save-todo-btn {
     cursor: pointer;
     background-color: rgb(175, 41, 41);
     border: 0;
@@ -148,7 +179,8 @@ body {
 }
 
 .save-project-btn:hover,
-.save-edit-project-btn:hover {
+.save-edit-project-btn:hover,
+.save-todo-btn:hover {
     background-color: rgb(215, 50, 50);
     outline: 1px solid #fff;
 }

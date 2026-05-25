@@ -115,7 +115,8 @@ body {
 
 }
 
-.project-name-input {
+.project-name-input,
+.edit-project-name-input {
     padding: 5px;
     border-radius: 5px;
     border: 0;
@@ -123,11 +124,13 @@ body {
     color: #fff;
 }
 
-.project-name-input::placeholder {
+.project-name-input::placeholder,
+.edit-project-name-input::placeholder {
     color: #ffffff76;
 }
 
-.save-project-btn {
+.save-project-btn,
+.save-edit-project-btn {
     cursor: pointer;
     background-color: rgb(175, 41, 41);
     border: 0;
@@ -138,12 +141,14 @@ body {
     box-shadow: 0px 0px 6px 1px #00000035;
 }
 
-.save-project-btn:hover {
+.save-project-btn:hover,
+.save-edit-project-btn:hover {
     background-color: rgb(215, 50, 50);
     outline: 1px solid #fff;
 }
 
-.cancel-btn {
+.cancel-btn,
+.cancel-edit-project-btn {
     cursor: pointer;
     background-color: rgb(44, 44, 44);
     color: #fff;
@@ -154,7 +159,8 @@ body {
     box-shadow: 0px 0px 6px 1px #00000035;
 }
 
-.cancel-btn:hover {
+.cancel-btn:hover,
+.cancel-edit-project-btn:hover {
     background-color: rgb(64, 64, 64);
     outline: 1px solid #fff;
 }
@@ -194,6 +200,10 @@ body {
 .delete-project-btn:hover {
     background-color: rgb(215, 50, 50);
     outline: 1px solid #fff;
+}
+
+.edit-project-name-input {
+    margin-right: 150px;
 }
 
 /* keep at the end of the file */

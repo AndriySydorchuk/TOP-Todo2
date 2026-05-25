@@ -176,6 +176,17 @@ const domManager = (() => {
 
                 const todoObj = projectTodosArr[index];
 
+                if (todoCard.classList.contains("expanded")) {
+                    todoCard.classList.remove("expanded");
+
+                    todoCard.innerHTML = "";
+
+                    todoCard.appendChild(todoCardTitle);
+                    return;
+                }
+
+                todoCard.classList.add("expanded");
+
                 todoCard.innerHTML = "";
 
                 //create descr paragraph and so on

@@ -303,11 +303,7 @@ const domManager = (() => {
 
                 if (isDeleted) {
                     storageManager.saveList(projectName, collectionManager.getProjectTodos(projectName));
-                    alert("Todo was successfully deleted");
                     renderTodosView(projectName);
-                }
-                else {
-                    alert("Todo deletion failed.");
                 }
 
             })

@@ -33,17 +33,11 @@ const modalController = (() => {
         modal.appendChild(modalContent);
         container.appendChild(modal);
 
-        modal.addEventListener("click", (e) => {
-            if (e.target === modal) {
-                hide();
-            }
-        })
-
         return modal;
     }
 
     function getModal() {
-        return document.querySelector(".modal");
+        return document.querySelector(".newtodo-modal");
     }
 
     function createInput(inputTag, inputType, inputId, labelText) {

@@ -1,8 +1,10 @@
 import './style.css';
-import { appManager } from './appManager';
 import { collectionManager } from './collectionManager';
 import { domManager } from './domManager';
+import { storageManager } from './storageManager';
 
-appManager.init();
+if (storageManager.get("default") === null) {
+    storageManager.save("default", []);
+}
 collectionManager.init();
 domManager.init();

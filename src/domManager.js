@@ -7,9 +7,8 @@ const domManager = (() => {
     let editingTodoId = null;
 
     function init() {
-        handleNewProjectBtn();
-
         // projects view
+        createNewProjectForm();
         renderProjectsView();
 
         handleNewTodoBtn();
@@ -39,7 +38,7 @@ const domManager = (() => {
         })
     }
 
-    function handleNewProjectBtn() {
+    function createNewProjectForm() {
         const newProjectBtn = document.querySelector(".new-project-btn");
         const container = document.querySelector(".top-container");
 
@@ -56,79 +55,35 @@ const domManager = (() => {
         cancelBtn.textContent = "Cancel";
 
         container.append(nameInput, saveBtn, cancelBtn);
-
-        newProjectBtn.addEventListener("click", () => {
-            newProjectBtn.classList.add("hidden");
-
-            nameInput.classList.remove("hidden");
-            saveBtn.classList.remove("hidden");
-            cancelBtn.classList.remove("hidden");
-
-            nameInput.focus();
-        })
-
-        saveBtn.addEventListener("click", () => {
-            const existingProjectNames = collectionManager.getProjectNames();
-            const newProjectName = nameInput.value.trim();
-
-            if (!newProjectName) {
-                alert("Project name cannot be empty");
-                return;
-            }
-
-            if (existingProjectNames.includes(newProjectName)) {
-                alert(`There's already project named '${newProjectName}'`);
-                return;
-            }
-
-            storageManager.save(newProjectName, []);
-
-            nameInput.value = "";
-            nameInput.classList.add("hidden");
-            saveBtn.classList.add("hidden");
-            cancelBtn.classList.add("hidden");
-
-            newProjectBtn.classList.remove("hidden");
-
-            renderProjectsView();
-        })
-
-        cancelBtn.addEventListener("click", () => {
-            nameInput.value = "";
-            nameInput.classList.add("hidden");
-            saveBtn.classList.add("hidden");
-            cancelBtn.classList.add("hidden");
-
-            newProjectBtn.classList.remove("hidden");
-        });
     }
 
-    function handleProjectCardClick() {
-        const projectCards = document.querySelectorAll(".project-card");
+    function showNewProjectForm() {
+        const newProjectBtn = document.querySelector(".new-project-btn");
 
-        projectCards.forEach((projectCard) => {
-            projectCard.addEventListener("click", () => {
-                const projectView = document.querySelector(".projects-view");
-                const todosView = document.querySelector(".todos-view");
+        const nameInput = document.querySelector(".project-name-input");
+        const saveBtn = document.querySelector(".save-project-btn");
+        const cancelBtn = document.querySelector(".cancel-btn");
 
-                projectView.classList.add("hidden");
-                todosView.classList.remove("hidden");
+        hide(newProjectBtn);
+        show(nameInput, saveBtn, cancelBtn);
 
-                const nameInput = document.querySelector(".project-name-input");
-                const saveBtn = document.querySelector(".save-project-btn");
-                const cancelBtn = document.querySelector(".cancel-btn");
-                const newProjectBtn = document.querySelector(".new-project-btn");
+        nameInput.focus();
+    }
 
-                nameInput.value = "";
-                nameInput.classList.add("hidden");
-                saveBtn.classList.add("hidden");
-                cancelBtn.classList.add("hidden");
+    function saveNewProject() {
+        const nameInput = document.querySelector("project-name-input");
 
-                newProjectBtn.classList.remove("hidden");
+        const existingProjectNames = collectionManager.getProjectNames();
+        const newProjectName = nameInput.value.trim();
 
-                renderTodosView(projectCard.textContent);
-            })
-        })
+        if (!newProjectName) return;
+
+        if (existingProjectNames.includes(newProjectName)) return;
+
+        storageManager.save(newProjectName, []);
+
+        resetNewProjectForm();
+        renderProjectsView();
     }
 
     // TODOS VIEW
@@ -462,7 +417,7 @@ const domManager = (() => {
         renderTodosView(projectName);
     }
 
-    return { init, show, hide, toggleAppView, resetNewProjectForm }
+    return { init, show, hide, toggleAppView, showNewProjectForm, saveNewProject, resetNewProjectForm }
 })();
 
 export { domManager };

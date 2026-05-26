@@ -81,7 +81,7 @@ const domManager = (() => {
                 return;
             }
 
-            storageManager.saveList(newProjectName, []);
+            storageManager.save(newProjectName, []);
 
             nameInput.value = "";
             nameInput.classList.add("hidden");
@@ -278,7 +278,7 @@ const domManager = (() => {
                 collectionManager.addTodo(todo, projectName);
             }
 
-            storageManager.saveList(projectName, collectionManager.getProjectTodos(projectName));
+            storageManager.save(projectName, collectionManager.getProjectTodos(projectName));
 
             modalController.resetInputs();
             modalController.hide();
@@ -325,7 +325,7 @@ const domManager = (() => {
                 const isDeleted = collectionManager.deleteTodo(todoToDeleteId, projectName);
 
                 if (isDeleted) {
-                    storageManager.saveList(projectName, collectionManager.getProjectTodos(projectName));
+                    storageManager.save(projectName, collectionManager.getProjectTodos(projectName));
                     renderTodosView(projectName);
                 }
 
@@ -339,7 +339,7 @@ const domManager = (() => {
         deleteBtn.addEventListener("click", (e) => {
             const projectName = document.querySelector(".todos-title").textContent.trim();
 
-            storageManager.removeList(projectName);
+            storageManager.remove(projectName);
             collectionManager.init();
 
             const todosView = document.querySelector(".todos-view");
@@ -400,8 +400,8 @@ const domManager = (() => {
                 return;
             }
 
-            storageManager.saveList(newProjectName, collectionManager.getProjectTodos(currentProjectName));
-            storageManager.removeList(currentProjectName);
+            storageManager.save(newProjectName, collectionManager.getProjectTodos(currentProjectName));
+            storageManager.remove(currentProjectName);
 
             nameInput.value = "";
             nameInput.classList.add("hidden");

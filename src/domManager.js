@@ -2,7 +2,6 @@ import { storageManager } from "./storageManager"
 import { collectionManager } from "./collectionManager"
 import { createTodo } from './todo';
 import { modalController } from './modalController';
-import { eventManager } from './eventManager';
 
 const domManager = (() => {
     let editingTodoId = null;

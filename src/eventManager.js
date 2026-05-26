@@ -5,6 +5,9 @@ const eventManager = (() => {
         // projects view
         bindNewProjectForm();
         bindProjectCardEvent();
+
+        // todos view
+        bindTodoActions();
     }
 
     function bindProjectCardEvent() {
@@ -36,6 +39,29 @@ const eventManager = (() => {
 
         cancelBtn.addEventListener("click", () => {
             domManager.resetNewProjectForm();
+        })
+    }
+
+    function bindTodoActions() {
+        const todosContainer = document.querySelector(".todos-container");
+
+        todosContainer.addEventListener("click", (e) => {
+            const editBtn = e.target.closest(".edit-todo-btn");
+            const deleteBtn = e.target.closest(".delete-todo-btn");
+            const todoCard = editBtn.closest(".todo-card");
+
+            if (!todoCard) return;
+
+            if (editBtn) {
+                domManager.editTodo(todoCard);
+                return;
+            }
+
+            if (deleteBtn) {
+                domManager.deleteTodo(todoCard);
+                return;
+            }
+
         })
     }
 

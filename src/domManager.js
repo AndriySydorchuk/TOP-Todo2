@@ -8,11 +8,22 @@ const domManager = (() => {
     function init() {
         // projects view
         createNewProjectForm();
+        createProjectForm(
+            "top-container",
+            "project-name-input",
+            "save-project-btn",
+            "cancel-btn"
+        )
         renderProjectsView();
 
         // todos view
         modalController.create();
-        createEditProjectForm();
+        createProjectForm(
+            "todos-header-actions",
+            "edit-project-name-input",
+            "save-edit-project-btn",
+            "cancel-edit-project-btn"
+        )
     }
 
     // PROJECTS VIEW
@@ -36,24 +47,7 @@ const domManager = (() => {
         })
     }
 
-    function createNewProjectForm() {
-        const newProjectBtn = document.querySelector(".new-project-btn");
-        const container = document.querySelector(".top-container");
 
-        const nameInput = document.createElement("input");
-        nameInput.classList.add("project-name-input", "hidden");
-        nameInput.placeholder = "Type new project name";
-
-        const saveBtn = document.createElement("button");
-        saveBtn.classList.add("save-project-btn", "hidden");
-        saveBtn.textContent = "Save";
-
-        const cancelBtn = document.createElement("button");
-        cancelBtn.classList.add("cancel-btn", "hidden");
-        cancelBtn.textContent = "Cancel";
-
-        container.append(nameInput, saveBtn, cancelBtn);
-    }
 
     function showNewProjectForm() {
         const newProjectBtn = document.querySelector(".new-project-btn");
@@ -77,24 +71,6 @@ const domManager = (() => {
         nameInput.value = "";
         hide(nameInput, saveBtn, cancelBtn);
         show(newProjectBtn);
-    }
-
-    function createEditProjectForm() {
-        const container = document.querySelector(".todos-header-actions");
-
-        const nameInput = document.createElement("input");
-        nameInput.classList.add("edit-project-name-input", "hidden");
-        nameInput.placeholder = "Type new project name";
-
-        const saveBtn = document.createElement("button");
-        saveBtn.classList.add("save-edit-project-btn", "hidden");
-        saveBtn.textContent = "Save";
-
-        const cancelBtn = document.createElement("button");
-        cancelBtn.classList.add("cancel-edit-project-btn", "hidden");
-        cancelBtn.textContent = "Cancel";
-
-        container.append(nameInput, saveBtn, cancelBtn);
     }
 
     function showEditProjectForm() {
@@ -340,6 +316,29 @@ const domManager = (() => {
 
         projectsView.classList.toggle("hidden");
         todosView.classList.toggle("hidden");
+    }
+
+    function createProjectForm(
+        containerClassName,
+        nameInputClassName,
+        saveBtnClassName,
+        cancelBtnClassName
+    ) {
+        const container = document.querySelector(`.${containerClassName}`);
+
+        const nameInput = document.createElement("input");
+        nameInput.classList.add(nameInputClassName, "hidden");
+        nameInput.placeholder = "Type new project name";
+
+        const saveBtn = document.createElement("button");
+        saveBtn.classList.add(saveBtnClassName, "hidden");
+        saveBtn.textContent = "Save";
+
+        const cancelBtn = document.createElement("button");
+        cancelBtn.classList.add(cancelBtnClassName, "hidden");
+        cancelBtn.textContent = "Cancel";
+
+        container.append(nameInput, saveBtn, cancelBtn);
     }
 
     return {

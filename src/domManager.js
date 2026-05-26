@@ -11,7 +11,8 @@ const domManager = (() => {
         createNewProjectForm();
         renderProjectsView();
 
-        handleNewTodoBtn();
+        // todos view
+        modalController.create();
         handleEditProjectBtn();
         handleDeleteProjectBtn();
     }
@@ -174,53 +175,37 @@ const domManager = (() => {
         renderProjectsView();
     }
 
-    function handleNewTodoBtn() {
-        const newTodoBtn = document.querySelector(".new-todo-btn");
+    function saveTodo() {
+        const newTodoValues = modalController.getInputValues();
 
-        const modal = modalController.create();
-        const saveBtn = modal.querySelector(".save-todo-btn");
-        const cancelBtn = modal.querySelector(".cancel-btn");
+        if (
+            newTodoValues.title === "" ||
+            newTodoValues.priority === "" ||
+            newTodoValues.dueDate === ""
+        ) return;
 
-        newTodoBtn.addEventListener("click", () => {
-            modalController.show();
-        })
+        const projectName = getCurrentProjectName();
 
-        saveBtn.addEventListener("click", () => {
-            const newTodoValues = modalController.getInputValues();
+        const todo = createTodo(
+            newTodoValues.title,
+            newTodoValues.description,
+            newTodoValues.dueDate,
+            newTodoValues.priority
+        )
 
-            if (newTodoValues.title === "" || newTodoValues.priority === "") {
-                alert("Title and priority fields cannot be empty");
-                return;
-            }
+        if (editingTodoId !== null) {
+            collectionManager.updateTodo(projectName, editingTodoId, todo);
+            editingTodoId = null;
+        } else {
+            collectionManager.addTodo(todo, projectName);
+        }
 
-            const projectName = getCurrentProjectName();
+        storageManager.save(projectName, collectionManager.getProjectTodos(projectName));
 
-            const todo = createTodo(
-                newTodoValues.title,
-                newTodoValues.description,
-                newTodoValues.dueDate,
-                newTodoValues.priority
-            )
+        modalController.resetInputs();
+        hide(modalController.getModal());
 
-            if (editingTodoId !== null) {
-                collectionManager.updateTodo(projectName, editingTodoId, todo);
-                editingTodoId = null;
-            } else {
-                collectionManager.addTodo(todo, projectName);
-            }
-
-            storageManager.save(projectName, collectionManager.getProjectTodos(projectName));
-
-            modalController.resetInputs();
-            modalController.hide();
-
-            renderTodosView(projectName);
-        })
-
-        cancelBtn.addEventListener("click", () => {
-            modalController.resetInputs();
-            modalController.hide();
-        })
+        renderTodosView(projectName);
     }
 
     function editTodo(todoCard) {
@@ -233,7 +218,7 @@ const domManager = (() => {
         editingTodoId = todoId;
 
         modalController.setInputValues(todoObj);
-        modalController.show();
+        show(modalController.getModal());
     }
 
     function deleteTodo(todoCard) {
@@ -393,7 +378,7 @@ const domManager = (() => {
         renderTodosView(projectName);
     }
 
-    return { init, show, hide, toggleAppView, showNewProjectForm, saveNewProject, resetNewProjectForm, resetEditProjectForm, openProject, editTodo, deleteTodo, expandTodoCard, returnToProjectsView }
+    return { init, show, hide, toggleAppView, showNewProjectForm, saveNewProject, resetNewProjectForm, resetEditProjectForm, openProject, saveTodo, editTodo, deleteTodo, expandTodoCard, returnToProjectsView }
 })();
 
 export { domManager };

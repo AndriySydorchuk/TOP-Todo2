@@ -12,7 +12,6 @@ const domManager = (() => {
         renderProjectsView();
 
         handleNewTodoBtn();
-        handleTodosBackBtn();
         handleEditProjectBtn();
         handleDeleteProjectBtn();
     }
@@ -169,31 +168,10 @@ const domManager = (() => {
         todoCard.append(todoCardTitle, todoDescr, todoDueDate, todoPriority);
     }
 
-    function handleTodosBackBtn() {
-        const backBtn = document.querySelector(".todos-view .back-btn");
-        backBtn.addEventListener("click", () => {
-            const projectsView = document.querySelector(".projects-view");
-            const todosView = document.querySelector(".todos-view");
-
-            projectsView.classList.remove("hidden");
-            todosView.classList.add("hidden");
-
-            const nameInput = document.querySelector(".edit-project-name-input");
-            const saveBtn = document.querySelector(".save-edit-project-btn");
-            const cancelBtn = document.querySelector(".cancel-edit-project-btn");
-
-            nameInput.value = "";
-
-            nameInput.classList.add("hidden");
-            saveBtn.classList.add("hidden");
-            cancelBtn.classList.add("hidden");
-
-            document.querySelector(".todos-title").classList.remove("hidden");
-            document.querySelector(".edit-project-btn").classList.remove("hidden");
-            document.querySelector(".delete-project-btn").classList.remove("hidden");
-
-            renderProjectsView();
-        })
+    function returnToProjectsView() {
+        toggleAppView();
+        resetEditProjectForm();
+        renderProjectsView();
     }
 
     function handleNewTodoBtn() {
@@ -376,14 +354,29 @@ const domManager = (() => {
     }
 
     function resetNewProjectForm() {
+        const newProjectBtn = document.querySelector(".new-project-btn");
         const nameInput = document.querySelector(".project-name-input");
         const saveBtn = document.querySelector(".save-project-btn");
         const cancelBtn = document.querySelector(".cancel-btn");
-        const newProjectBtn = document.querySelector(".new-project-btn");
 
         nameInput.value = "";
         hide(nameInput, saveBtn, cancelBtn);
         show(newProjectBtn);
+    }
+
+    function resetEditProjectForm() {
+        const nameInput = document.querySelector(".edit-project-name-input");
+        const saveBtn = document.querySelector(".save-edit-project-btn");
+        const cancelBtn = document.querySelector(".cancel-edit-project-btn");
+
+        const todosTitle = document.querySelector(".todos-title");
+        const editProjectBtn = document.querySelector(".edit-project-btn");
+        const deleteProjectBtn = document.querySelector(".delete-project-btn");
+
+        nameInput.value = "";
+
+        hide(nameInput, saveBtn, cancelBtn);
+        show(todosTitle, editProjectBtn, deleteProjectBtn);
     }
 
     function toggleAppView() {
@@ -400,7 +393,7 @@ const domManager = (() => {
         renderTodosView(projectName);
     }
 
-    return { init, show, hide, toggleAppView, showNewProjectForm, saveNewProject, resetNewProjectForm, openProject, editTodo, deleteTodo, expandTodoCard }
+    return { init, show, hide, toggleAppView, showNewProjectForm, saveNewProject, resetNewProjectForm, resetEditProjectForm, openProject, editTodo, deleteTodo, expandTodoCard, returnToProjectsView }
 })();
 
 export { domManager };

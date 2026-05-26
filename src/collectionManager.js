@@ -4,7 +4,7 @@ const collectionManager = (() => {
     //object -> collection = {prName: todosArr, prName2: todosArr2}
     let collectionObj;
 
-    function init() {
+    function loadCollection() {
         collectionObj = storageManager.loadAll();
     }
 
@@ -66,7 +66,7 @@ const collectionManager = (() => {
         return true;
     }
 
-    return { init, addTodo, deleteTodo, getProjectNames, getProjectTodos, updateTodo };
+    return { loadCollection, addTodo, updateTodo, deleteTodo, getProjectNames, getProjectTodos };
 })();
 
 export { collectionManager }

@@ -48,9 +48,7 @@ const eventManager = (() => {
         todosContainer.addEventListener("click", (e) => {
             const editBtn = e.target.closest(".edit-todo-btn");
             const deleteBtn = e.target.closest(".delete-todo-btn");
-            const todoCard = editBtn.closest(".todo-card");
-
-            if (!todoCard) return;
+            const todoCard = e.target.closest(".todo-card");
 
             if (editBtn) {
                 domManager.editTodo(todoCard);
@@ -62,6 +60,10 @@ const eventManager = (() => {
                 return;
             }
 
+            if (todoCard) {
+                domManager.expandTodoCard(todoCard);
+                return;
+            }
         })
     }
 

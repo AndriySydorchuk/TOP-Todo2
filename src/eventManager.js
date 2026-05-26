@@ -1,4 +1,5 @@
 import { domManager } from './domManager';
+import { modalController } from './modalController';
 
 const eventManager = (() => {
     function init() {
@@ -9,6 +10,7 @@ const eventManager = (() => {
         // todos view
         bindTodoCardActions();
         bindTodoViewActions();
+        bindModal();
     }
 
     function bindProjectCardEvent() {
@@ -79,6 +81,37 @@ const eventManager = (() => {
                 return;
             }
         })
+    }
+
+    function bindModal() {
+        const newTodoBtn = document.querySelector(".new-todo-btn");
+
+        const modal = modalController.getModal();
+        const modalContent = document.querySelector(".newtodo-modal-content");
+
+        newTodoBtn.addEventListener("click", () => {
+            domManager.show(modal);
+        })
+
+        modal.addEventListener("click", (e) => {
+            if (e.target === modal) domManager.hide(modal)
+        })
+
+        modalContent.addEventListener("click", (e) => {
+            const saveBtn = e.target.closest(".save-todo-btn");
+            const cancelBtn = e.target.closest(".cancel-btn");
+
+            if (saveBtn) {
+                domManager.saveTodo();
+                return;
+            }
+
+            if (cancelBtn) {
+                modalController.resetInputs();
+                domManager.hide(modal);
+            }
+        })
+
     }
 
     return { init };

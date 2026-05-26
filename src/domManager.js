@@ -14,7 +14,6 @@ const domManager = (() => {
         // todos view
         modalController.create();
         createEditProjectForm();
-        handleDeleteProjectBtn();
     }
 
     // PROJECTS VIEW
@@ -249,23 +248,14 @@ const domManager = (() => {
         }
     }
 
-    function handleDeleteProjectBtn() {
-        const deleteBtn = document.querySelector(".delete-project-btn");
+    function deleteProject() {
+        const projectName = getCurrentProjectName();
 
-        deleteBtn.addEventListener("click", (e) => {
-            const projectName = getCurrentProjectName();
+        storageManager.remove(projectName);
+        collectionManager.loadCollection();
 
-            storageManager.remove(projectName);
-            collectionManager.loadCollection();
-
-            const todosView = document.querySelector(".todos-view");
-            const projectsView = document.querySelector(".projects-view");
-
-            todosView.classList.add("hidden");
-            projectsView.classList.remove("hidden");
-
-            renderProjectsView();
-        })
+        toggleAppView();
+        renderProjectsView();
     }
 
     function createEditProjectForm() {
@@ -367,7 +357,7 @@ const domManager = (() => {
         renderTodosView(projectName);
     }
 
-    return { init, show, hide, toggleAppView, showNewProjectForm, showEditProjectForm, saveNewProject, resetNewProjectForm, resetEditProjectForm, openProject, saveTodo, editTodo, deleteTodo, expandTodoCard, returnToProjectsView, saveProjectEdit }
+    return { init, show, hide, toggleAppView, showNewProjectForm, showEditProjectForm, saveNewProject, resetNewProjectForm, resetEditProjectForm, openProject, saveTodo, editTodo, deleteTodo, expandTodoCard, returnToProjectsView, saveProjectEdit, deleteProject }
 })();
 
 export { domManager };

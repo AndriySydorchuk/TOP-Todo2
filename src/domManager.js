@@ -20,7 +20,7 @@ const domManager = (() => {
 
     function renderProjectsView() {
         //update projects list
-        collectionManager.init();
+        collectionManager.loadCollection();
         const projectNamesArr = collectionManager.getProjectNames();
 
         const projectsGridElement = document.querySelector(".projects-grid");
@@ -340,7 +340,7 @@ const domManager = (() => {
             const projectName = document.querySelector(".todos-title").textContent.trim();
 
             storageManager.remove(projectName);
-            collectionManager.init();
+            collectionManager.loadCollection();
 
             const todosView = document.querySelector(".todos-view");
             const projectsView = document.querySelector(".projects-view");
@@ -412,7 +412,7 @@ const domManager = (() => {
             editProjectBtn.classList.remove("hidden");
             document.querySelector(".delete-project-btn").classList.remove("hidden");
 
-            collectionManager.init();
+            collectionManager.loadCollection();
             renderTodosView(newProjectName);
         })
 

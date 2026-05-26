@@ -8,6 +8,7 @@ const eventManager = (() => {
 
         // todos view
         bindTodoCardActions();
+        bindTodoViewActions();
     }
 
     function bindProjectCardEvent() {
@@ -62,6 +63,19 @@ const eventManager = (() => {
 
             if (todoCard) {
                 domManager.expandTodoCard(todoCard);
+                return;
+            }
+        })
+    }
+
+    function bindTodoViewActions() {
+        const actionsContainer = document.querySelector(".actions");
+
+        actionsContainer.addEventListener("click", (e) => {
+            const goBackBtn = e.target.closest(".back-btn");
+
+            if (goBackBtn) {
+                domManager.returnToProjectsView();
                 return;
             }
         })

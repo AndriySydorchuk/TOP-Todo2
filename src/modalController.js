@@ -42,6 +42,10 @@ const modalController = (() => {
         return modal;
     }
 
+    function getModal() {
+        return document.querySelector(".modal");
+    }
+
     function createInput(inputTag, inputType, inputId, labelText) {
         const container = document.createElement("div");
         container.classList.add(`${inputId}-box`);
@@ -71,16 +75,6 @@ const modalController = (() => {
         })
 
         return options;
-    }
-
-    function show() {
-        const modal = document.querySelector(".newtodo-modal");
-        modal.classList.remove("hidden");
-    }
-
-    function hide() {
-        const modal = document.querySelector(".newtodo-modal");
-        modal.classList.add("hidden");
     }
 
     function getInputValues() {
@@ -116,7 +110,7 @@ const modalController = (() => {
     }
 
 
-    return { create, show, hide, getInputValues, setInputValues, resetInputs };
+    return { create, getModal, getInputValues, setInputValues, resetInputs };
 })();
 
 export { modalController };

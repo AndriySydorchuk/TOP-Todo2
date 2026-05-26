@@ -7,7 +7,7 @@ const eventManager = (() => {
         bindProjectCardEvent();
 
         // todos view
-        bindTodoActions();
+        bindTodoCardActions();
     }
 
     function bindProjectCardEvent() {
@@ -42,7 +42,7 @@ const eventManager = (() => {
         })
     }
 
-    function bindTodoActions() {
+    function bindTodoCardActions() {
         const todosContainer = document.querySelector(".todos-container");
 
         todosContainer.addEventListener("click", (e) => {

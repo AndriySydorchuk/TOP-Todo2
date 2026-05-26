@@ -2,12 +2,15 @@ import { storageManager } from "./storageManager"
 import { collectionManager } from "./collectionManager"
 import { createTodo } from './todo';
 import { modalController } from './modalController';
+import { eventManager } from './eventManager';
 
 const domManager = (() => {
     let editingTodoId = null;
 
     function init() {
         handleNewProjectBtn();
+
+        // projects view
         renderProjectsView();
 
         handleNewTodoBtn();
@@ -35,8 +38,6 @@ const domManager = (() => {
 
             projectsGridElement.appendChild(card);
         })
-
-        handleProjectCardClick();
     }
 
     function handleNewProjectBtn() {
@@ -429,7 +430,40 @@ const domManager = (() => {
 
     }
 
-    return { init }
+    function show(...elements) {
+        elements.forEach(element => element.classList.remove("hidden"));
+    }
+
+    function hide(...elements) {
+        elements.forEach(element => element.classList.add("hidden"));
+    }
+
+    function resetNewProjectForm() {
+        const nameInput = document.querySelector(".project-name-input");
+        const saveBtn = document.querySelector(".save-project-btn");
+        const cancelBtn = document.querySelector(".cancel-btn");
+        const newProjectBtn = document.querySelector(".new-project-btn");
+
+        nameInput.value = "";
+        hide(nameInput, saveBtn, cancelBtn);
+        show(newProjectBtn);
+    }
+
+    function toggleAppView() {
+        const projectsView = document.querySelector(".projects-view");
+        const todosView = document.querySelector(".todos-view");
+
+        projectsView.classList.toggle("hidden");
+        todosView.classList.toggle("hidden");
+    }
+
+    function openProject(projectName) {
+        domManager.toggleAppView();
+        domManager.resetNewProjectForm();
+        renderTodosView(projectName);
+    }
+
+    return { init, show, hide, toggleAppView, resetNewProjectForm }
 })();
 
 export { domManager };

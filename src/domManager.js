@@ -97,10 +97,10 @@ const domManager = (() => {
 
         //create cards
         const todosArr = collectionManager.getProjectTodos(projectName);
-        todosArr.forEach((todo, index) => {
+        todosArr.forEach((todo) => {
             const todoCard = document.createElement("div");
             todoCard.classList.add("todo-card");
-            todoCard.dataset.id = index;
+            todoCard.dataset.id = todo.id;
 
             const todoHeader = document.createElement("div");
             todoHeader.classList.add("todo-card-header");

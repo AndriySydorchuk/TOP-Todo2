@@ -7,7 +7,6 @@ import { stateManager } from './stateManager';
 const domManager = (() => {
     function init() {
         // projects view
-        createNewProjectForm();
         createProjectForm(
             "top-container",
             "project-name-input",
@@ -46,8 +45,6 @@ const domManager = (() => {
             projectsGridElement.appendChild(card);
         })
     }
-
-
 
     function showNewProjectForm() {
         const newProjectBtn = document.querySelector(".new-project-btn");

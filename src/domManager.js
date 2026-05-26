@@ -127,46 +127,46 @@ const domManager = (() => {
             todoCard.appendChild(todoHeader);
             todosContainer.appendChild(todoCard);
         })
-
-        handleTodoCardExpand(projectName);
     }
 
-    function handleTodoCardExpand(projectName) {
-        const projectTodosArr = collectionManager.getProjectTodos(projectName);
+    function getCurrentProjectName() {
+        const projectsViewTitle = document.querySelector(".todos-title");
 
-        const todoCards = document.querySelectorAll(".todo-card");
-        todoCards.forEach((todoCard, index) => {
-            todoCard.addEventListener("click", () => {
-                const todoCardTitle = todoCard.firstElementChild;
+        return projectsViewTitle.textContent.trim();
+    }
 
-                const todoObj = projectTodosArr[index];
+    function expandTodoCard(todoCard) {
+        const projectTodos = collectionManager.getProjectTodos(getCurrentProjectName());
 
-                if (todoCard.classList.contains("expanded")) {
-                    todoCard.classList.remove("expanded");
+        const todoCardTitle = todoCard.firstElementChild;
 
-                    todoCard.innerHTML = "";
+        const todoIndex = Number.parseInt(todoCard.dataset.id, 10);
+        const todoObj = projectTodos[todoIndex];
 
-                    todoCard.appendChild(todoCardTitle);
-                    return;
-                }
+        if (todoCard.classList.contains("expanded")) {
+            todoCard.classList.remove("expanded");
 
-                todoCard.classList.add("expanded");
+            todoCard.innerHTML = "";
 
-                todoCard.innerHTML = "";
+            todoCard.appendChild(todoCardTitle);
+            return;
+        }
 
-                //create descr paragraph and so on
-                const todoDescr = document.createElement("p");
-                todoDescr.textContent = `Description: ${todoObj.description}`;
+        todoCard.classList.add("expanded");
 
-                const todoDueDate = document.createElement("p");
-                todoDueDate.textContent = `Due Date: ${todoObj.dueDate}`;
+        todoCard.innerHTML = "";
 
-                const todoPriority = document.createElement("p");
-                todoPriority.textContent = `Priority: ${todoObj.priority}`;
+        //create descr paragraph and so on
+        const todoDescr = document.createElement("p");
+        todoDescr.textContent = `Description: ${todoObj.description}`;
 
-                todoCard.append(todoCardTitle, todoDescr, todoDueDate, todoPriority);
-            })
-        })
+        const todoDueDate = document.createElement("p");
+        todoDueDate.textContent = `Due Date: ${todoObj.dueDate}`;
+
+        const todoPriority = document.createElement("p");
+        todoPriority.textContent = `Priority: ${todoObj.priority}`;
+
+        todoCard.append(todoCardTitle, todoDescr, todoDueDate, todoPriority);
     }
 
     function handleTodosBackBtn() {
@@ -215,7 +215,7 @@ const domManager = (() => {
                 return;
             }
 
-            const projectName = document.querySelector(".todos-title").textContent.trim();
+            const projectName = getCurrentProjectName();
 
             const todo = createTodo(
                 newTodoValues.title,
@@ -246,7 +246,7 @@ const domManager = (() => {
     }
 
     function editTodo(todoCard) {
-        const projectName = document.querySelector(".todos-title").textContent;
+        const projectName = getCurrentProjectName();
 
         const todoId = Number.parseInt(todoCard.dataset.id, 10);
 
@@ -259,7 +259,7 @@ const domManager = (() => {
     }
 
     function deleteTodo(todoCard) {
-        const projectName = document.querySelector(".todos-title").textContent;
+        const projectName = getCurrentProjectName();
 
         const todoToDeleteId = Number.parseInt(todoCard.dataset.id, 10);
 
@@ -275,7 +275,7 @@ const domManager = (() => {
         const deleteBtn = document.querySelector(".delete-project-btn");
 
         deleteBtn.addEventListener("click", (e) => {
-            const projectName = document.querySelector(".todos-title").textContent.trim();
+            const projectName = getCurrentProjectName();
 
             storageManager.remove(projectName);
             collectionManager.loadCollection();
@@ -400,7 +400,7 @@ const domManager = (() => {
         renderTodosView(projectName);
     }
 
-    return { init, show, hide, toggleAppView, showNewProjectForm, saveNewProject, resetNewProjectForm, openProject, editTodo, deleteTodo }
+    return { init, show, hide, toggleAppView, showNewProjectForm, saveNewProject, resetNewProjectForm, openProject, editTodo, deleteTodo, expandTodoCard }
 })();
 
 export { domManager };

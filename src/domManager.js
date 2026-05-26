@@ -97,10 +97,10 @@ const domManager = (() => {
 
         //create cards
         const todosArr = collectionManager.getProjectTodos(projectName);
-        todosArr.forEach((todo) => {
+        todosArr.forEach((todo, index) => {
             const todoCard = document.createElement("div");
             todoCard.classList.add("todo-card");
-            todoCard.dataset.id = todo.id;
+            todoCard.dataset.id = index;
 
             const todoHeader = document.createElement("div");
             todoHeader.classList.add("todo-card-header");
@@ -128,8 +128,6 @@ const domManager = (() => {
             todosContainer.appendChild(todoCard);
         })
 
-        handleEditTodoBtns(projectName);
-        handleDeleteTodoBtns(projectName);
         handleTodoCardExpand(projectName);
     }
 
@@ -247,45 +245,30 @@ const domManager = (() => {
         })
     }
 
-    function handleEditTodoBtns(projectName) {
-        const editBtns = document.querySelectorAll(".edit-todo-btn");
+    function editTodo(todoCard) {
+        const projectName = document.querySelector(".todos-title").textContent;
 
-        editBtns.forEach((editBtn) => {
-            editBtn.addEventListener("click", (e) => {
-                e.stopPropagation();
+        const todoId = Number.parseInt(todoCard.dataset.id, 10);
 
-                const todoCard = editBtn.closest(".todo-card");
-                const todoId = Number.parseInt(todoCard.dataset.id, 10);
+        const todoObj = collectionManager.getProjectTodos(projectName)[todoId];
 
-                const todoObj = collectionManager.getProjectTodos(projectName)[todoId];
+        editingTodoId = todoId;
 
-                editingTodoId = todoId;
-
-                modalController.setInputValues(todoObj);
-                modalController.show();
-            })
-        })
+        modalController.setInputValues(todoObj);
+        modalController.show();
     }
 
-    function handleDeleteTodoBtns(projectName) {
-        const deleteBtns = document.querySelectorAll(".delete-todo-btn");
-        deleteBtns.forEach((deleteBtn) => {
-            deleteBtn.addEventListener("click", (e) => {
-                e.stopPropagation();
+    function deleteTodo(todoCard) {
+        const projectName = document.querySelector(".todos-title").textContent;
 
-                const todoCard = deleteBtn.closest(".todo-card");
+        const todoToDeleteId = Number.parseInt(todoCard.dataset.id, 10);
 
-                const todoToDeleteId = Number.parseInt(todoCard.dataset.id, 10);
+        const isDeleted = collectionManager.deleteTodo(todoToDeleteId, projectName);
 
-                const isDeleted = collectionManager.deleteTodo(todoToDeleteId, projectName);
-
-                if (isDeleted) {
-                    storageManager.save(projectName, collectionManager.getProjectTodos(projectName));
-                    renderTodosView(projectName);
-                }
-
-            })
-        })
+        if (isDeleted) {
+            storageManager.save(projectName, collectionManager.getProjectTodos(projectName));
+            renderTodosView(projectName);
+        }
     }
 
     function handleDeleteProjectBtn() {
@@ -417,7 +400,7 @@ const domManager = (() => {
         renderTodosView(projectName);
     }
 
-    return { init, show, hide, toggleAppView, showNewProjectForm, saveNewProject, resetNewProjectForm }
+    return { init, show, hide, toggleAppView, showNewProjectForm, saveNewProject, resetNewProjectForm, openProject, editTodo, deleteTodo }
 })();
 
 export { domManager };

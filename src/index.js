@@ -6,5 +6,5 @@ import { storageManager } from './storageManager';
 if (storageManager.get("default") === null) {
     storageManager.save("default", []);
 }
-collectionManager.init();
+collectionManager.loadCollection();
 domManager.init();

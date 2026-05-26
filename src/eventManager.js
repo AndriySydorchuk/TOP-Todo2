@@ -11,7 +11,7 @@ const eventManager = (() => {
         bindTodoCardActions();
         bindTodoViewActions();
         bindModal();
-        bindProjectNameEdit();
+        bindProjectActions();
     }
 
     function bindProjectCardEvent() {
@@ -114,16 +114,23 @@ const eventManager = (() => {
         })
     }
 
-    function bindProjectNameEdit() {
+    function bindProjectActions() {
         const container = document.querySelector(".todos-header-actions");
 
         container.addEventListener("click", (e) => {
             const editBtn = e.target.closest(".edit-project-btn");
+            const deleteBtn = e.target.closest(".delete-project-btn");
+
             const saveBtn = e.target.closest(".save-edit-project-btn");
             const cancelBtn = e.target.closest(".cancel-edit-project-btn");
 
             if (editBtn) {
                 domManager.showEditProjectForm();
+                return;
+            }
+
+            if (deleteBtn) {
+                domManager.deleteProject();
                 return;
             }
 

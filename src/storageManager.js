@@ -1,10 +1,14 @@
 const storageManager = (() => {
-    function saveList(name, list) {
-        localStorage.setItem(name, JSON.stringify(list));
+    function get(key) {
+        return localStorage.getItem(key);
     }
 
-    function loadList(name) {
-        const list = localStorage.getItem(name);
+    function save(key, list) {
+        localStorage.setItem(key, JSON.stringify(list));
+    }
+
+    function load(key) {
+        const list = localStorage.getItem(key);
 
         if (!list) return [];
 
@@ -24,11 +28,11 @@ const storageManager = (() => {
         return allStorage;
     }
 
-    function removeList(key) {
+    function remove(key) {
         localStorage.removeItem(key);
     }
 
-    return { saveList, removeList, loadList, loadAll };
+    return { get, save, remove, load, loadAll };
 })();
 
 export { storageManager };

@@ -2,10 +2,9 @@ import { storageManager } from "./storageManager"
 import { collectionManager } from "./collectionManager"
 import { createTodo } from './todo';
 import { modalController } from './modalController';
+import { stateManager } from './stateManager';
 
 const domManager = (() => {
-    let editingTodoId = null;
-
     function init() {
         // projects view
         createNewProjectForm();
@@ -110,7 +109,6 @@ const domManager = (() => {
         show(nameInput, saveBtn, cancelBtn);
 
         nameInput.focus();
-
     }
 
     function resetEditProjectForm() {
@@ -154,8 +152,10 @@ const domManager = (() => {
 
         if (existingProjectNames.includes(newProjectName)) return;
 
-        storageManager.save(newProjectName, collectionManager.getProjectTodos(getCurrentProjectName()));
-        storageManager.remove(getCurrentProjectName());
+        storageManager.save(newProjectName, collectionManager.getProjectTodos(stateManager.getCurrentProject()));
+        storageManager.remove(stateManager.getCurrentProject());
+
+        stateManager.setCurrentProject(newProjectName);
 
         resetEditProjectForm();
 
@@ -164,9 +164,10 @@ const domManager = (() => {
     }
 
     function deleteProject() {
-        const projectName = getCurrentProjectName();
+        const projectName = stateManager.getCurrentProject();
 
         storageManager.remove(projectName);
+        stateManager.setCurrentProject(null);
         collectionManager.loadCollection();
 
         toggleAppView();
@@ -175,7 +176,9 @@ const domManager = (() => {
 
     // TODOS VIEW
 
-    function renderTodosView(projectName) {
+    function renderTodosView() {
+        const projectName = stateManager.getCurrentProject();
+
         const todosViewTitle = document.querySelector(".todos-title");
         todosViewTitle.textContent = projectName;
 
@@ -217,7 +220,8 @@ const domManager = (() => {
     }
 
     function expandTodoCard(todoCard) {
-        const projectTodos = collectionManager.getProjectTodos(getCurrentProjectName());
+        const projectName = stateManager.getCurrentProject();
+        const projectTodos = collectionManager.getProjectTodos(projectName);
 
         const todoCardTitle = todoCard.firstElementChild;
 
@@ -259,7 +263,7 @@ const domManager = (() => {
             newTodoValues.dueDate === ""
         ) return;
 
-        const projectName = getCurrentProjectName();
+        const projectName = stateManager.getCurrentProject();
 
         const todo = createTodo(
             newTodoValues.title,
@@ -268,9 +272,9 @@ const domManager = (() => {
             newTodoValues.priority
         )
 
-        if (editingTodoId !== null) {
-            collectionManager.updateTodo(projectName, editingTodoId, todo);
-            editingTodoId = null;
+        if (stateManager.getEditingTodoId() !== null) {
+            collectionManager.updateTodo(projectName, stateManager.getEditingTodoId(), todo);
+            stateManager.setEditingTodoId(null);
         } else {
             collectionManager.addTodo(todo, projectName);
         }
@@ -284,20 +288,20 @@ const domManager = (() => {
     }
 
     function editTodo(todoCard) {
-        const projectName = getCurrentProjectName();
+        const projectName = stateManager.getCurrentProject();
 
         const todoId = Number.parseInt(todoCard.dataset.id, 10);
 
         const todoObj = collectionManager.getProjectTodos(projectName)[todoId];
 
-        editingTodoId = todoId;
+        stateManager.setEditingTodoId(todoId);
 
         modalController.setInputValues(todoObj);
         show(modalController.getModal());
     }
 
     function deleteTodo(todoCard) {
-        const projectName = getCurrentProjectName();
+        const projectName = stateManager.getCurrentProject();
 
         const todoToDeleteId = Number.parseInt(todoCard.dataset.id, 10);
 
@@ -309,10 +313,10 @@ const domManager = (() => {
         }
     }
 
-    function openProject(projectName) {
+    function openProject() {
         domManager.toggleAppView();
         domManager.resetNewProjectForm();
-        renderTodosView(projectName);
+        renderTodosView(stateManager.getCurrentProject());
     }
 
     function returnToProjectsView() {
@@ -336,12 +340,6 @@ const domManager = (() => {
 
         projectsView.classList.toggle("hidden");
         todosView.classList.toggle("hidden");
-    }
-
-    function getCurrentProjectName() {
-        const projectsViewTitle = document.querySelector(".todos-title");
-
-        return projectsViewTitle.textContent.trim();
     }
 
     return {

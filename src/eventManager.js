@@ -1,5 +1,6 @@
 import { domManager } from './domManager';
 import { modalController } from './modalController';
+import { stateManager } from './stateManager';
 
 const eventManager = (() => {
     function init() {
@@ -22,9 +23,9 @@ const eventManager = (() => {
 
             if (!projectCard) return;
 
-            const projectName = projectCard.textContent;
+            stateManager.setCurrentProject(projectCard.textContent.trim());
 
-            domManager.openProject(projectName);
+            domManager.openProject();
         })
     }
 
@@ -78,6 +79,7 @@ const eventManager = (() => {
             const goBackBtn = e.target.closest(".back-btn");
 
             if (goBackBtn) {
+                stateManager.setCurrentProject(null);
                 domManager.returnToProjectsView();
                 return;
             }
